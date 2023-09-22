@@ -5,7 +5,7 @@ import CustomButton from "./src/components/CustomButton";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { StyleSheet } from "react-native";
 
-const Login = (props) => {
+const App = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -90,5 +90,5 @@ const estilos = StyleSheet.create({
   }
 })
 
-export default Login;
+export default App;
 
