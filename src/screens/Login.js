@@ -62,7 +62,7 @@ const Login = (props) => {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-around",
-      marginTop: 40
+      marginTop: 35
     },
     titulo: {
       fontFamily: 'AveriaLibre-Regular',
@@ -73,19 +73,19 @@ const Login = (props) => {
       fontSize: 25,
       fontFamily: 'AveriaLibre-Regular',
       color: 'white',
-      marginTop: 30,
+      marginTop: 20,
     },
     inputContainer: {
       marginBottom: 20,
-      marginTop: 80
+      marginTop: 70
     },
     buttonContainer: {
-      marginTop: 55
+      marginTop: 50
     },
     textoErro: {
       fontFamily: 'AveriaLibre-Regular',
       color: '#FD7979',
-      fontSize: 20
+      fontSize: 18
     }
   })
   
