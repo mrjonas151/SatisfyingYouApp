@@ -37,12 +37,11 @@ const App = (props) => {
     textoLogin: {
       fontSize: 25,
       fontFamily: 'AveriaLibre-Regular',
-      color: 'white',
-      marginTop: 20,
+      color: 'white'
     },
     inputContainer: {
       marginBottom: 20,
-      marginTop: 210
+      marginTop: 170
     },
     buttonContainer: {
       marginTop: 50

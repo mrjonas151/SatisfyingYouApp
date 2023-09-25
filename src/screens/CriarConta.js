@@ -45,8 +45,7 @@ const estilos = StyleSheet.create({
   tituloContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
-    marginTop: 35
+    justifyContent: "space-around"
   },
   titulo: {
     fontFamily: 'AveriaLibre-Regular',
