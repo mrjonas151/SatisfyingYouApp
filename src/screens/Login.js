@@ -9,21 +9,15 @@ const Login = (props) => {
     const [password, setPassword] = useState('')
   
     const goToCadastro = () => {
-        //props.navigation.navigate("Cadastro")
-        //Funcao de ir a cadastro para implementar mais tarde
-        return;
+        props.navigation.navigate("CriarConta")
     }
   
     const goToHome = () => {
-        //props.navigation.navigate("Home")
-        //Funcao de ir a home para implementar mais tarde
-        return;
+        props.navigation.navigate("Home")
     }
   
     const goToRecover = () => {
-        //props.navigation.navigate("Recover")
-        //Funcao de ir a recuperar senha para implementar mais tarde
-        return;
+        props.navigation.navigate("RecuperarSenha")
     }
   
     return(

@@ -7,9 +7,7 @@ const App = (props) => {
     const [email, setEmail] = useState('')
   
     const goToLogin = () => {
-        //props.navigation.navigate("Cadastro")
-        //Funcao de ir a cadastro para implementar mais tarde
-        return;
+        props.navigation.navigate("Login")
     }
   
     return(
