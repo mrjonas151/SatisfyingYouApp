@@ -7,13 +7,13 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 const Login = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-  
+
     const goToCadastro = () => {
         props.navigation.navigate("CriarConta")
     }
   
     const goToHome = () => {
-        props.navigation.navigate("Home")
+        props.navigation.navigate("Drawer")
     }
   
     const goToRecover = () => {
