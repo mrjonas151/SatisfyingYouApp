@@ -15,7 +15,7 @@ const CriarConta = (props) => {
     if(isEmailValid && isPassValid){
       props.navigation.navigate("Login")
     }else if(!isEmailValid){
-      setMessageError("E-mail inválido")
+      setMessageError("E-mail parece ser inválido")
     }else{
       setMessageError("O campo repetir senha difere da senha")
     }

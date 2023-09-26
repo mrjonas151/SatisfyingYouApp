@@ -12,7 +12,7 @@ const App = (props) => {
       if(isValid){
         props.navigation.navigate("Login")
       }else{
-        setMessageError("E-mail e/ou senha inválidos.")
+        setMessageError("E-mail parece ser inválido")
       }
     }
 
