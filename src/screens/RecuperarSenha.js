@@ -5,9 +5,27 @@ import CustomButton from "../components/CustomButton"
 
 const App = (props) => {
     const [email, setEmail] = useState('')
+    const [messageError, setMessageError] = useState('')
+    const [isValid, setIsValid] = useState(false)
   
     const goToLogin = () => {
+      if(isValid){
         props.navigation.navigate("Login")
+      }else{
+        setMessageError("E-mail e/ou senha inválidos.")
+      }
+    }
+
+    const handleEmailChange = (text) => {
+      setEmail(text)
+      const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+      const testeEmail = emailRegex.test(text);
+      if (!testeEmail) {
+        setIsValid(false)
+      }else{
+        setMessageError("")
+        setIsValid(true)
+      }
     }
   
     return(
@@ -15,8 +33,8 @@ const App = (props) => {
   
           <View style = {estilos.inputContainer}>
             <Text style = {estilos.textoLogin}>E-mail</Text>
-            <CustomInput texto="jurandir.pereira@hotmail.com" />
-            <Text style={estilos.textoErro}>E-mail parece ser inválido</Text>
+            <CustomInput onChangeText={handleEmailChange} isSecure={false} value={email} />
+            <Text style={estilos.textoErro}>{messageError}</Text>
           </View>
   
           <View style = {estilos.buttonContainer}>

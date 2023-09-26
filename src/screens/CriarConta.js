@@ -7,9 +7,44 @@ const CriarConta = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [repeatPass, setRepeatPass] = useState('')
+  const [messageError, setMessageError] = useState('')
+  const [isEmailValid, setIsEmailValid] = useState(false)
+  const [isPassValid, setIsPassValid] = useState(false)
 
   const goToLogin = () => {
+    if(isEmailValid && isPassValid){
       props.navigation.navigate("Login")
+    }else if(!isEmailValid){
+      setMessageError("E-mail inválido")
+    }else{
+      setMessageError("O campo repetir senha difere da senha")
+    }
+  }
+
+  const handleEmailChange = (text) => {
+    setEmail(text)
+    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+    const testeEmail = emailRegex.test(text);
+    if (!testeEmail) {
+      setIsEmailValid(false)
+    }else{
+      setMessageError("")
+      setIsEmailValid(true)
+    }
+  }
+
+  const handlePasswordChange = (text) => {
+    setPassword(text)
+  }
+
+  const handleRepeatPasswordChange = (text) => {
+    setRepeatPass(text)
+    if(text != password){
+      setIsPassValid(false)
+    }else{
+      setIsPassValid(true)
+      setMessageError("")
+    }
   }
 
   return(
@@ -19,12 +54,12 @@ const CriarConta = (props) => {
 
         <View style = {estilos.inputContainer}>
           <Text style = {estilos.textoLogin}>E-mail</Text>
-          <CustomInput texto="jurandir.pereira@hotmail.com" />
+          <CustomInput onChangeText={handleEmailChange} isSecure={false} value={email} />
           <Text style = {estilos.textoLogin}>Senha</Text>
-          <CustomInput texto="********"/>
+          <CustomInput onChangeText={handlePasswordChange} isSecure={true} value={password} />
           <Text style = {estilos.textoLogin}>Repetir senha</Text>
-          <CustomInput texto=""/>
-          <Text style={estilos.textoErro}>O campo repetir senha difere da senha</Text>
+          <CustomInput onChangeText={handleRepeatPasswordChange} isSecure={true} value={repeatPass} />
+          <Text style={estilos.textoErro}>{messageError}</Text>
           </View>
 
         <View style = {estilos.buttonContainer}>
