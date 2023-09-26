@@ -23,8 +23,8 @@ const CriarConta = (props) => {
 
   const handleEmailChange = (text) => {
     setEmail(text)
-    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
-    const testeEmail = emailRegex.test(text);
+    const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
+    const testeEmail = emailRegex.test(text)
     if (!testeEmail) {
       setIsEmailValid(false)
     }else{
