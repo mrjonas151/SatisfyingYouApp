@@ -2,13 +2,17 @@ import { TextInput, StyleSheet } from "react-native";
 
 const CustomInput = (props) => {
 
-    const texto = props.texto
+    const { onChangeText, isSecure, value} = props;
 
-    return(
-        <TextInput style={estilos.texto}>
-            {texto}
-        </TextInput>
-    );
+
+    return (
+        <TextInput
+          style={estilos.texto}
+          secureTextEntry={isSecure}
+          onChangeText={onChangeText}
+          value={value}
+        />
+      );
 }
 
 const estilos = StyleSheet.create({

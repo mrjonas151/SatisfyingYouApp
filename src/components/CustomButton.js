@@ -1,10 +1,11 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 const CustomButton = (props) => {
-const texto = props.texto
-const backgroundColor = props.backgroundColor || 'blue';
-const height = props.height || 35;
-const marginBottom = props.marginBottom || 10;
+
+    const texto = props.texto
+    const backgroundColor = props.backgroundColor || 'blue';
+    const height = props.height || 35;
+    const marginBottom = props.marginBottom || 10;
 
     return(
         <TouchableOpacity style={[estilos.fundo, { backgroundColor, height, marginBottom }]} onPress={props.funcao}>

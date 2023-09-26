@@ -7,17 +7,39 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 const Login = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [messageError, setMessageError] = useState('')
+    const [isValid, setIsValid] = useState(false)
 
     const goToCadastro = () => {
         props.navigation.navigate("CriarConta")
     }
   
     const goToHome = () => {
+      if(isValid){
         props.navigation.navigate("Drawer")
+      }else{
+        setMessageError("E-mail e/ou senha inválidos.")
+      }
     }
   
     const goToRecover = () => {
         props.navigation.navigate("RecuperarSenha")
+    }
+
+    const handleEmailChange = (text) => {
+      setEmail(text)
+      const emailRegex = /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+      const testeEmail = emailRegex.test(text);
+      if (!testeEmail) {
+        setIsValid(false)
+      }else{
+        setMessageError("")
+        setIsValid(true)
+      }
+    }
+
+    const handlePasswordChange = (text) => {
+      setPassword(text)
     }
   
     return(
@@ -29,10 +51,10 @@ const Login = (props) => {
   
           <View style = {estilos.inputContainer}>
             <Text style = {estilos.textoLogin}>E-mail</Text>
-            <CustomInput texto="jurandir.pereira@hotmail.com" />
-            <Text style = {estilos.textoLogin}>Senha</Text>
-            <CustomInput texto="********"/>
-            <Text style={estilos.textoErro}>E-mail e/ou senha inválidos.</Text>
+            <CustomInput onChangeText={handleEmailChange} isSecure={false} value={email} />
+            <Text style = {estilos.textoLogin} >Senha</Text>
+            <CustomInput isSecure={true} onChangeText={handlePasswordChange} value={password} />
+            <Text style={estilos.textoErro}>{messageError}</Text>
             </View>
   
           <View style = {estilos.buttonContainer}>
