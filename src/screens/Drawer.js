@@ -8,7 +8,7 @@ const DrawerNavigator = createDrawerNavigator();
 const Drawer = () => {
     return(
         <DrawerNavigator.Navigator 
-            screenOptions={{ drawerActiveTintColor: 'red', drawerLabelStyle: {color: 'blue'}} }
+            screenOptions={{ drawerActiveTintColor: '#2B1D62', drawerLabelStyle: {color: 'white', fontFamily: "AveriaLibre-Regular", fontSize: 22, marginLeft: 10}} }
             drawerContent={(props) => <CustomDrawer {...props} />}
         >
             <DrawerNavigator.Screen name="Home" component={Home}/>
