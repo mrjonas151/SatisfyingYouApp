@@ -16,7 +16,7 @@ const Login = (props) => {
   
     const goToHome = () => {
       if(isValid){
-        props.navigation.navigate("AgradecimentoParticipacao")
+        props.navigation.navigate("Drawer")
       }else{
         setMessageError("E-mail e/ou senha inválidos.")
       }
