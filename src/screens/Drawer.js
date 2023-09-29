@@ -8,7 +8,7 @@ const DrawerNavigator = createDrawerNavigator();
 const Drawer = () => {
     return(
         <DrawerNavigator.Navigator 
-            screenOptions={{ drawerActiveTintColor: '#2B1D62', drawerLabelStyle: {color: 'white', fontFamily: "AveriaLibre-Regular", fontSize: 22, marginLeft: 10}} }
+            screenOptions={{ drawerActiveTintColor: '#2B1D62', drawerLabelStyle: {color: 'white', fontFamily: "AveriaLibre-Regular", fontSize: 22, marginLeft: 10, flexDirection: 'row'}} }
             drawerContent={(props) => <CustomDrawer {...props} />}
         >
             <DrawerNavigator.Screen name="Pesquisas" component={Home}/>

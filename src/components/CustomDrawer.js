@@ -8,17 +8,20 @@ const CustomDrawer = (props) => {
     return (
         //para caso os elementos drawer ultrapassem a tela, ele pode ser scrollavel
         <DrawerContentScrollView {...props} contentContainerStyle={estilos.drawerContainer}> 
-            <View style = {estilos.main_view}>
-                <Text style = {estilos.texto}>teste@gmail.com</Text>
-                <View style={estilos.line}></View>
-            </View>
+        <View style = {estilos.main_view}>
+            <Text style = {estilos.texto}>teste@gmail.com</Text>
+            <View style={estilos.line}></View>
+        </View>
 
+        <Icon style={estilos.iconeDescription} name="description" size={30} color="white" />
+        <View style={estilos.cList}>
             
             <DrawerItemList {...props} />
-            
-            <View style={estilos.sairContainer} >
-                <TouchableOpacity style={estilos.sairContainer} onPress={() => props.navigation.popToTop()}>
-                    <Icon style={estilos.icone} name="logout" size={30} color="white" />
+        </View>
+
+        <View style={estilos.sairContainer} >
+            <TouchableOpacity style={estilos.sairContainer} onPress={() => props.navigation.popToTop()}>
+                <Icon style={estilos.icone} name="logout" size={30} color="white" />
                     <Text style={estilos.sairTexto}>Sair</Text>
                 </TouchableOpacity>
             </View>
@@ -35,51 +38,58 @@ const estilos = StyleSheet.create({
         justifyContent: "flex-start"
     },
     main_view: {
-      padding: 30,
-      flex: 0.20,
-      flexDirection: 'column',
-      backgroundColor: 'green'
-    },
-    texto: {
-      flexDirection: "row",
-      fontSize: 20, 
-      color: 'white', 
-      alignSelf: 'center',
-      fontFamily: "AveriaLibre-Regular",
-      marginVertical: 25,
-      backgroundColor: 'red'
-    },
-    icone: {
+        padding: 30,
+        flex: 0.20,
+        flexDirection: 'column',
+        backgroundColor: 'green'
+      },
+      texto: {
+        flexDirection: "row",
+        fontSize: 20, 
+        color: 'white', 
+        alignSelf: 'center',
+        fontFamily: "AveriaLibre-Regular",
+        marginVertical: 20,
+        backgroundColor: 'red'
+      },
+      icone: {
         flexDirection: "row",
         marginLeft: 8,
         marginTop: 90
-    },
-    sairContainer: {
+      },
+      sairContainer: {
         flexDirection: "row",
         alignItems: "center",
-        marginLeft: 7,
         marginTop: 17,
+        paddingTop: 150,
         flex: 0.9,
         paddingTop: 150,
         backgroundColor: 'yellow'
-    },
-    sairTexto: {
+      },
+      sairTexto: {
         fontSize:22, 
         color: 'white', 
         fontFamily: "AveriaLibre-Regular",
         paddingLeft: 10,
         backgroundColor: 'black',
         marginTop: 90
-    },
-    line:{
+      },
+      line:{
         borderBottomWidth: 2,
         borderColor: '#ECF8FF',
         width: 220,
         height: 0,
         marginHorizontal: 30,
-        top: 100,
+        top: 90,
         position: 'absolute',
-    }
+      },
+      cList:{
+        backgroundColor: 'black',
+      },
+      iconeDescription:{
+        flexDirection: "row",
+        backgroundColor: 'yellow',
+      }
 })
 
 export default CustomDrawer;
