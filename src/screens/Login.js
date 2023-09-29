@@ -16,7 +16,7 @@ const Login = (props) => {
   
     const goToHome = () => {
       if(isValid){
-        props.navigation.navigate("Home")
+        props.navigation.navigate("ModificarPesquisa")
       }else{
         setMessageError("E-mail e/ou senha inválidos.")
       }
