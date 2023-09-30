@@ -6,9 +6,10 @@ import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
 
-const ModificarPesquisa = () => {
+const ModificarPesquisa = (props) => {
+
     const goToHome = () => {
-      props.navigation.navigate("ModificarPesquisa")
+      props.navigation.navigate("Home")
     }
 
     return(
@@ -50,12 +51,17 @@ const estilos = StyleSheet.create({
         marginTop: 20,
       },
       imagem: {
-        width: '100%', height: '100%' 
+        width: '50%', 
+        height: 110,
+        alignItems: 'center',
+        justifyContent: 'center'
       },
       botao: {
         backgroundColor: "white", 
-        height: 100, 
-        width: 200
+        height: 130, 
+        width: 220,
+        justifyContent: 'center',
+        alignItems: 'center'
       },
       rodape:{
         marginTop: 50,
