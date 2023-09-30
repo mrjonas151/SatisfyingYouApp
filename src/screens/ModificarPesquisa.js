@@ -1,12 +1,15 @@
-import { Text, View, Button } from "react-native";
+import { Text, View, Button, Modal } from "react-native";
 import { StyleSheet } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
+import { useState } from "react";
+import { ActionModal } from "../components/ActionModal";
 
 const ModificarPesquisa = (props) => {
+    const [visibleModal, setVisibleModal] = useState(false);
 
     const goToHome = () => {
       props.navigation.navigate("Home")
@@ -31,8 +34,15 @@ const ModificarPesquisa = (props) => {
 
             <View style= {estilos.rodape}>
               <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="Salvar" width={270} funcao={goToHome}></CustomButton>
-              <TouchableOpacity><Icon name="delete" size={60} color="#FFF" /></TouchableOpacity>
+              <TouchableOpacity onPress={() => setVisibleModal(true)}><Icon name="delete" size={60} color="#FFF" /></TouchableOpacity>
             </View>
+
+            <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
+              <ActionModal 
+                handleConfirma={() => props.navigation.navigate("Home")} 
+                handleCancel={() => props.navigation.navigate("Home")}
+              />
+            </Modal>
 
         </View>
     );
