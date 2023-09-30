@@ -17,15 +17,16 @@ const ModificarPesquisa = (props) => {
 
           <View style={estilos.campos}>
             <Text style={estilos.texto}>Nome</Text>
-            <CustomInput value="Carnaval 2024"><Icon name="sentiment-satisfied" size={60} color="#274" /></CustomInput>
+            <CustomInput value="Carnaval 2024"></CustomInput>
+            <Text style={estilos.texto}>Data</Text>
 
-            <View>
-                <Text style={estilos.texto}>Data</Text>
-                <CustomInput value="16/02/2024"></CustomInput>
+            <View style={estilos.calendario}>
+                <CustomInput width={290} value="16/02/2024"></CustomInput>
+                <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
             </View>
 
             <Text style={estilos.texto}>Imagem</Text>
-            <TouchableOpacity style={estilos.botao} ><Image style={estilos.imagem} source={require('../assets/images/Party_Popper_imag.png')} /></TouchableOpacity>
+            <TouchableOpacity style={estilos.botaoImagem} ><Image style={estilos.imagem} source={require('../assets/images/Party_Popper_imag.png')} /></TouchableOpacity>
             </View>
 
             <View style= {estilos.rodape}>
@@ -56,7 +57,7 @@ const estilos = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
       },
-      botao: {
+      botaoImagem: {
         backgroundColor: "white", 
         height: 130, 
         width: 220,
@@ -70,6 +71,20 @@ const estilos = StyleSheet.create({
       },
       campos: {
         marginTop: 40
+      },
+      botao: {
+        backgroundColor: 'white',
+      },
+      calendario: {
+        flexDirection: 'row',
+        width: 330,
+        justifyContent: "space-between",
+        backgroundColor: 'white' ,
+        alignItems: "center",
+        backgroundColor: 'white'
+      }, 
+      icone: {
+        marginRight: 4,
       }
 })
 

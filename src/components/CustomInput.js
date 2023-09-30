@@ -2,7 +2,7 @@ import { TextInput, StyleSheet } from "react-native";
 
 const CustomInput = (props) => {
 
-    const { onChangeText, isSecure, value} = props;
+    const { onChangeText, isSecure, value, width} = props;
 
 
     return (
@@ -11,6 +11,7 @@ const CustomInput = (props) => {
           secureTextEntry={isSecure}
           onChangeText={onChangeText}
           value={value}
+          width={width}
         />
       );
 }
