@@ -17,7 +17,7 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
         <Stack.Screen name="CriarConta" component={CriarConta} options={{ title: 'Nova Conta' }}/>
         <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} options={{ title: 'Recuperação de senha' }} />
-        <Stack.Screen name="Home" component={Home} options={{headerShown:true}} />
+        <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
         <Stack.Screen name="ModificarPesquisa" component={ModificarPesquisa} options={{headerShown:true, title: 'Modificar Pesquisa'}} />
         <Stack.Screen name="AgradecimentoParticipacao" component={AgradecimentoParticipacao} options={{headerShown:false}} />
       </Stack.Navigator>
