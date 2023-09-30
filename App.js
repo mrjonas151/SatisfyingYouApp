@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return(
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{headerTintColor: 'white', headerStyle: {backgroundColor: '#2B1D62', height: 80}, headerTitleStyle: { fontSize: 28, fontFamily: "AveriaLibre-Regular" }}}>
+      <Stack.Navigator initialRouteName="Home" screenOptions={{headerTintColor: 'white', headerStyle: {backgroundColor: '#2B1D62', height: 80}, headerTitleStyle: { fontSize: 28, fontFamily: "AveriaLibre-Regular" }}}>
         <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
         <Stack.Screen name="CriarConta" component={CriarConta} options={{ title: 'Nova Conta' }}/>
         <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} options={{ title: 'Recuperação de senha' }} />
