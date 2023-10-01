@@ -3,7 +3,7 @@ import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer"
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 
-const CustomDrawer = (props) => {
+const CustomBox = (props) => {
 
     const goToLogin = () => {
         props.navigation.navigate("Login")
@@ -77,4 +77,4 @@ const estilos = StyleSheet.create({
     }
 })
 
-export default CustomDrawer;
+export default CustomBox;
