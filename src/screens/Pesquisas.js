@@ -13,14 +13,9 @@ const Pesquisas = (props) => {
           id: '1',
           title: 'SECOMP',
           subtitle: '10/10/2023',
-          imageUrl: './assets/images/Secomp.svg',
+          imageUrl: '"../assets/images/Party_Popper_imag.png"',
         },
-        {
-          id: '2',
-          title: 'Filme 2',
-          subtitle: 'Comédia',
-          imageUrl: 'URL_DA_IMAGEM_2',
-        },
+       
       ]
 
     return(
