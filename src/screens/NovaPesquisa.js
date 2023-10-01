@@ -4,15 +4,49 @@ import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
-import { Image } from "react-native";
 import { useState } from "react";
-import { ActionModal } from "../components/ActionModal";
+
 
 const NovaPesquisa = (props) => {
-    const [visibleModal, setVisibleModal] = useState(false);
+    const [data, setData] = useState('')
+    const [nome, setNome] = useState('')
+    const [isValid, setIsValid] = useState(false)
+    const [isValidData, setIsValidData] = useState(false)
+    const [messageError1, setMessageError1] = useState('Preencha o nome da pesquisa')
+    const [messageError2, setMessageError2] = useState('Preencha a data')
+    const [messageError3, setMessageError3] = useState('')
 
     const goToHome = () => {
-      props.navigation.navigate("Home")
+      if(isValid && isValidData){
+        props.navigation.navigate("Home")
+      }else{
+        setMessageError3("Nome e/ou Data inválidos.")
+      }
+    }
+
+    const handleNomePesq = (text) => {
+      setMessageError3("")
+      setNome(text)
+      if (text===null || text === '' || text.length === 0) {
+        setIsValid(false)
+        setMessageError1("Preencha o nome da pesquisa")
+      }else{
+        setMessageError1("")
+        setIsValid(true)
+      }
+    }
+
+    const handleDataPesq = (text) => {
+      setMessageError3("")
+      setData(text)
+      const formaData = /^\d{2}\/\d{2}\/\d{4}$/;
+      if(text && formaData.test(text)){
+        setMessageError2("")
+        setIsValidData(true)
+      }else{
+        setIsValidData(false)
+        setMessageError2("Preencha a data")
+      }
     }
 
     return(
@@ -20,19 +54,19 @@ const NovaPesquisa = (props) => {
 
           <View style={estilos.campos}>
             <Text style={estilos.texto}>Nome</Text>
-            <CustomInput value=""></CustomInput>
-            <Text style={estilos.textoErro}>Preencha no nome da pesquisa</Text>
+            <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
+            <Text style={estilos.textoErro}>{messageError1}</Text>
             <Text style={estilos.texto}>Data</Text>
 
             <View style={estilos.calendario}>
-                <CustomInput width={290} value=""></CustomInput>
+                <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
                 <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
             </View>
-            <Text style={estilos.textoErro}>Preencha a data</Text>
+            <Text style={estilos.textoErro}>{messageError2}</Text>
             <Text style={estilos.texto}>Imagem</Text>
             <TouchableOpacity style={estilos.botaoImagem} ><Text style={estilos.imagem}>Câmera/Galeria de imagens</Text></TouchableOpacity>
             </View>
-
+            <Text style={estilos.textoErro}>{messageError3}</Text>
             <View style= {estilos.rodape}>
               <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="CADASTRAR" width={330} funcao={goToHome}></CustomButton>
             </View>
