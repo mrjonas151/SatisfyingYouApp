@@ -1,6 +1,10 @@
-import {View, Image, Text, StyleSheet} from "react-native";
+import {View, TouchableOpacity, Text, StyleSheet} from "react-native";
 import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialIcons";
+
+const goToLogin = () => {
+    props.navigation.popToTop()
+}
 
 const CustomDrawer = (props) => {
     return (
@@ -12,10 +16,10 @@ const CustomDrawer = (props) => {
                     <Icon style={estilos.icone} name="description" />
                     <Text style={estilos.textoUser}>Pesquisas</Text>
                 </View>
-                <View style={estilos.menuSair}>
+                <TouchableOpacity style={estilos.menuSair} onPress={props.navigation.popToTop()}>
                     <Icon style={estilos.icone} name="logout" />
-                    <Text style={estilos.textoUser}>Sair</Text>
-                </View>
+                    <Text style={estilos.textoUser} >Sair</Text>
+                </TouchableOpacity>
             </View>
             
         </DrawerContentScrollView>
@@ -24,14 +28,14 @@ const CustomDrawer = (props) => {
 
 const estilos = StyleSheet.create({
     menuPesquisa:{
-        top: 45,
+        top: 70,
         flexDirection: "row",
         alignItems:"center",
         justifyContent: "flex-start",
-        width: 220
+        width: 220,
+        position: 'absolute',
     },
     menuSair:{
-        top: 45,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
@@ -63,6 +67,7 @@ const estilos = StyleSheet.create({
         marginTop: 45,
         flexDirection: "column",
         alignItems: "center",
+        justifyContent:"space-between",
         height: 700
     }
 })
