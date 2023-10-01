@@ -20,29 +20,22 @@ const NovaPesquisa = (props) => {
 
           <View style={estilos.campos}>
             <Text style={estilos.texto}>Nome</Text>
-            <CustomInput value="Carnaval 2024"></CustomInput>
+            <CustomInput value=""></CustomInput>
+            <Text style={estilos.textoErro}>Preencha no nome da pesquisa</Text>
             <Text style={estilos.texto}>Data</Text>
 
             <View style={estilos.calendario}>
-                <CustomInput width={290} value="16/02/2024"></CustomInput>
+                <CustomInput width={290} value=""></CustomInput>
                 <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
             </View>
-
+            <Text style={estilos.textoErro}>Preencha a data</Text>
             <Text style={estilos.texto}>Imagem</Text>
-            <TouchableOpacity style={estilos.botaoImagem} ><Image style={estilos.imagem} source={require('../assets/images/Party_Popper_imag.png')} /></TouchableOpacity>
+            <TouchableOpacity style={estilos.botaoImagem} ><Text style={estilos.imagem}>Câmera/Galeria de imagens</Text></TouchableOpacity>
             </View>
 
             <View style= {estilos.rodape}>
-              <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="Salvar" width={270} funcao={goToHome}></CustomButton>
-              <TouchableOpacity onPress={() => setVisibleModal(true)}><Icon name="delete" size={60} color="#FFF" /></TouchableOpacity>
+              <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="CADASTRAR" width={330} funcao={goToHome}></CustomButton>
             </View>
-
-            <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
-              <ActionModal 
-                handleConfirma={() => props.navigation.navigate("Home")} 
-                handleCancel={() => props.navigation.navigate("Home")}
-              />
-            </Modal>
 
         </View>
     );
@@ -61,41 +54,42 @@ const estilos = StyleSheet.create({
         color: 'white',
         marginTop: 20,
       },
-      imagem: {
-        width: '50%', 
-        height: 110,
+    imagem: {
+        fontSize: 15,
+        fontFamily: 'AveriaLibre-Regular',
         alignItems: 'center',
         justifyContent: 'center'
       },
-      botaoImagem: {
+    botaoImagem: {
         backgroundColor: "white", 
-        height: 130, 
+        height: 110, 
         width: 220,
         justifyContent: 'center',
         alignItems: 'center'
-      },
-      rodape:{
+    },
+    rodape:{
         marginTop: 50,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-      },
-      campos: {
+        alignItems: "center"
+    },
+    campos: {
         marginTop: 40
-      },
-      botao: {
-        backgroundColor: 'white',
-      },
-      calendario: {
+    },
+    calendario: {
         flexDirection: 'row',
         width: 330,
         justifyContent: "space-between",
         backgroundColor: 'white' ,
         alignItems: "center",
         backgroundColor: 'white'
-      }, 
-      icone: {
+    }, 
+    icone: {
         marginRight: 4,
-      }
+    },
+    textoErro: {
+        fontFamily: 'AveriaLibre-Regular',
+        color: '#FD7979',
+        fontSize: 18
+    }
 })
 
 export default NovaPesquisa;

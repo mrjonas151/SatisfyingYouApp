@@ -11,9 +11,9 @@ const Home = () => {
     return(
         <DrawerNavigator.Navigator 
             drawerContent={(props) => <CustomDrawer{...props} />}>
-            <DrawerNavigator.Screen name="Home" component={Pesquisas} 
+            <DrawerNavigator.Screen name="Pesquisas" component={Pesquisas} 
             options={{title:'', headerStyle:{backgroundColor: '#2B1D62'}, 
-            headerTintColor: 'white'}} 
+            headerTintColor: 'white'}} initialRouteName={null}
             />
         </DrawerNavigator.Navigator>
     )

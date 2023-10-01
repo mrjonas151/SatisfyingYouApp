@@ -22,6 +22,12 @@ const Pesquisas = (props) => {
           subtitulo: '05/06/2023',
           imageUrl: require('../assets/images/Ubuntu.png'),
         },
+        {
+            id: '3',
+            titulo: 'MENINAS CPU',
+            subtitulo: '01/04/2022',
+            imageUrl: require('../assets/images/Meninas.png'),
+        },
       ]
 
     return(
@@ -86,7 +92,7 @@ const estilos = StyleSheet.create({
         height: '100%',
         padding: 20,
         flexDirection:"column",
-        justifyContent: "space-around"
+        justifyContent: "space-evenly"
     },
 
     box: {
