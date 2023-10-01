@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, FlatList, Image, TextInput } from "react-native
 import CustomButton from "../components/CustomButton"
 import React from "react"
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 const Pesquisas = (props) => {
 
@@ -50,11 +51,13 @@ const Pesquisas = (props) => {
                     data={pesquisasData}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
-                    <View style={estilos.box}>
-                        <Image source={item.imageUrl} style={estilos.image} resizeMode="contain"/>
-                        <Text style={estilos.titulo}>{item.titulo}</Text>
-                        <Text style={estilos.subtitulo}>{item.subtitulo}</Text>
-                    </View>
+                    <TouchableOpacity style={estilos.box}>
+                        
+                            <Image source={item.imageUrl} style={estilos.image} resizeMode="contain"/>
+                            <Text style={estilos.titulo}>{item.titulo}</Text>
+                            <Text style={estilos.subtitulo}>{item.subtitulo}</Text>
+                        
+                    </TouchableOpacity>
                     )}
                 />
             </View>
