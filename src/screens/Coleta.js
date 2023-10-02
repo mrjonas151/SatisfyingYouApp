@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao';
 
 export default function Coleta(props) {
@@ -17,8 +17,13 @@ export default function Coleta(props) {
     props.navigation.navigate('AgradecimentoParticipacao')
   }
 
+  const goAcoesPesquisa = () => {
+    props.navigation.navigate('AcoesPesquisa')
+  }
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.botaoSair} onPress={goAcoesPesquisa}></TouchableOpacity>
       <Text style={styles.title}>O que você achou do Carnaval 2024?</Text>
       <View style={styles.squaresContainer}>
         <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={goAgradecimentoParticipacao} />
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'AveriaLibre-Regular',
     textAlign: 'center',
-    paddingTop: 60,
+    paddingTop: 30,
   },
   div: {
     backgroundColor: '#372775',
@@ -62,5 +67,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  botaoSair: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    height: 40,
+    width: 50,
+    marginLeft: 320,
   }
 });
