@@ -40,7 +40,7 @@ const ModificarPesquisa = (props) => {
             <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
               <ActionModal 
                 handleConfirma={() => props.navigation.navigate("Home")} 
-                handleCancel={() => props.navigation.navigate("Home")}
+                handleCancel={() => props.navigation.navigate("AcoesPesquisa")}
               />
             </Modal>
 
