@@ -8,6 +8,9 @@ import 'react-native-gesture-handler';
 import AgradecimentoParticipacao from "./src/screens/AgradecimentoParticipacao";
 import ModificarPesquisa from "./src/screens/ModificarPesquisa";
 import NovaPesquisa from "./src/screens/NovaPesquisa";
+import AcoesPesquisa from "./src/screens/AcoesPesquisa";
+import Coleta from "./src/screens/Coleta";
+import Relatorio from "./src/screens/Relatorio";
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -20,6 +23,9 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
         <Stack.Screen name="NovaPesquisa" component={NovaPesquisa} options={{ title: 'Nova pesquisa' }} />        
         <Stack.Screen name="ModificarPesquisa" component={ModificarPesquisa} options={{headerShown:true, title: 'Modificar Pesquisa'}} />
+        <Stack.Screen name="AcoesPesquisa" component={AcoesPesquisa} options={{headerShown:true, title: 'AcoesPesquisa'}} />
+        <Stack.Screen name="Coleta" component={Coleta} options={{headerShown:true, title: 'Coleta'}} />
+        <Stack.Screen name="Relatorio" component={Relatorio} options={{headerShown:true, title: 'Relatorio'}} />
         <Stack.Screen name="AgradecimentoParticipacao" component={AgradecimentoParticipacao} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>

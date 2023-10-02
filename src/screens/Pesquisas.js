@@ -3,6 +3,7 @@ import CustomButton from "../components/CustomButton"
 import React from "react"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import { useNavigation } from '@react-navigation/native';
 
 const Pesquisas = (props) => {
 
@@ -10,18 +11,22 @@ const Pesquisas = (props) => {
         props.navigation.navigate("NovaPesquisa")
     }
 
+    const goToAcoesPesquisa = (pesquisaId) => {
+        props.navigation.navigate("AcoesPesquisa", { pesquisaId});
+    }
+
     const pesquisasData = [
         {
-          id: '1',
-          titulo: 'SECOMP 2023',
-          subtitulo: '10/10/2023',
-          imageUrl: require('../assets/images/Secomp.png'),
+            id: '1',
+            titulo: 'SECOMP 2023',
+            subtitulo: '10/10/2023',
+            imageUrl: require('../assets/images/Secomp.png'),
         },
         {
-          id: '2',
-          titulo: 'UBUNTU 2022',
-          subtitulo: '05/06/2023',
-          imageUrl: require('../assets/images/Ubuntu.png'),
+            id: '2',
+            titulo: 'UBUNTU 2022',
+            subtitulo: '05/06/2023',
+            imageUrl: require('../assets/images/Ubuntu.png'),
         },
         {
             id: '3',
@@ -51,11 +56,12 @@ const Pesquisas = (props) => {
                     data={pesquisasData}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
-                    <TouchableOpacity style={estilos.box}>
+                    <TouchableOpacity style={estilos.box} onPress={() => goToAcoesPesquisa(item.id)}>
                         
                             <Image source={item.imageUrl} style={estilos.image} resizeMode="contain"/>
                             <Text style={estilos.titulo}>{item.titulo}</Text>
                             <Text style={estilos.subtitulo}>{item.subtitulo}</Text>
+                            
                         
                     </TouchableOpacity>
                     )}

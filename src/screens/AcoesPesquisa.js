@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { DefaultSquareDiv } from '../components/DivPadrao.js';
+import { DivPadrao } from '../components/DivPadrao.js';
 
 export default function AcoesPesquisa(props) {
 
@@ -21,9 +21,9 @@ export default function AcoesPesquisa(props) {
   return (
     <View style={styles.container}>
         <View style={styles.squaresContainer}>
-          <DefaultSquareDiv  style={styles.div} textColor="#FFFFFF" text="Modificar" imageSource={require('../assets/images/Modificar.png')} onPress={goModificarPesquisa}/>
-          <DefaultSquareDiv  style={styles.div} textColor="#FFFFFF" text="Coletar dados" imageSource={require('../assets/images/Coletar_Dados.png')} onPress={goColeta}/>
-          <DefaultSquareDiv  style={styles.div} textColor="#FFFFFF" text="Relatório" imageSource={require('../assets/images/Relatorio.png')} onPress={goRelatorio}/>
+          <DivPadrao  style={styles.div} textColor="#FFFFFF" text="Modificar" imageSource={require('../assets/images/Modificar.png')} onPress={goModificarPesquisa}/>
+          <DivPadrao  style={styles.div} textColor="#FFFFFF" text="Coletar dados" imageSource={require('../assets/images/Coletar_Dados.png')} onPress={goColeta}/>
+          <DivPadrao  style={styles.div} textColor="#FFFFFF" text="Relatório" imageSource={require('../assets/images/Relatorio.png')} onPress={goRelatorio}/>
         </View>
     </View>
   );

@@ -1,14 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { DefaultSquareDiv } from '../components/DivPadrao';
+import { DivPadrao } from '../components/DivPadrao';
 
 export default function Coleta(props) {
 
   const { title } = props.route.params;
 
-  const formattedTitle = title.toLowerCase().replace(/\b[a-z]/g, function (letter) {
-    return letter.toUpperCase();
-  });
+  const formattedTitle = (typeof title === 'string' && title.trim() !== '')
+  ? title
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ')
+  : '';
 
   const goAgradecimentoParticipacao = () => {
     props.navigation.navigate('AgradecimentoParticipacao')
@@ -16,17 +19,17 @@ export default function Coleta(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>O que você achou do {formattedTitle}?</Text>
+      <Text style={styles.title}>O que você achou do Carnaval 2024?</Text>
       <View style={styles.squaresContainer}>
-        <DefaultSquareDiv style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={goAgradecimentoParticipacao} />
-        <DefaultSquareDiv style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={goAgradecimentoParticipacao} />
       </View>
       <View style={styles.squaresContainer}>
-        <DefaultSquareDiv style={styles.div} textColor="#FFFFFF" text="Neutro" imageSource={require('../assets/images/Sentimento_Neutro.png')} onPress={goAgradecimentoParticipacao} />
-        <DefaultSquareDiv style={styles.div} textColor="#FFFFFF" text="Bom" imageSource={require('../assets/images/Sentimento_Bom.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Neutro" imageSource={require('../assets/images/Sentimento_Neutro.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Bom" imageSource={require('../assets/images/Sentimento_Bom.png')} onPress={goAgradecimentoParticipacao} />
       </View>
       <View style={styles.squaresContainer}>
-        <DefaultSquareDiv style={styles.div} textColor="#FFFFFF" text="Excelente" imageSource={require('../assets/images/Sentimento_Excelente.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Excelente" imageSource={require('../assets/images/Sentimento_Excelente.png')} onPress={goAgradecimentoParticipacao} />
       </View>
     </View>
   );
