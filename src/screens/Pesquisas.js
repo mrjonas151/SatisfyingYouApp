@@ -3,7 +3,6 @@ import CustomButton from "../components/CustomButton"
 import React from "react"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { useNavigation } from '@react-navigation/native';
 
 const Pesquisas = (props) => {
 
