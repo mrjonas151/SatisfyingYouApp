@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
 
     texto: {
      fontSize: 20,
-     fontWeight: 'bold',
      color: 'white',
+     fontFamily: 'AveriaLibre-Bold'
     },
 
   });
