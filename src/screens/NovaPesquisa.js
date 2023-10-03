@@ -1,4 +1,4 @@
-import { Text, View, Button, Modal } from "react-native";
+import { Text, View } from "react-native";
 import { StyleSheet } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
@@ -37,11 +37,11 @@ const NovaPesquisa = (props) => {
     }
 
     const handleDataPesq = (text) => {
-      setMessageError3("")
+      setMessageError2("")
       setData(text)
       const formaData = /^\d{2}\/\d{2}\/\d{4}$/;
       if(text && formaData.test(text)){
-        setMessageError2("")
+        setMessageError3("")
         setIsValidData(true)
       }else{
         setIsValidData(false)
@@ -56,20 +56,23 @@ const NovaPesquisa = (props) => {
             <Text style={estilos.texto}>Nome</Text>
             <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
             <Text style={estilos.textoErro}>{messageError1}</Text>
+
             <Text style={estilos.texto}>Data</Text>
 
             <View style={estilos.calendario}>
                 <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
                 <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
             </View>
+
             <Text style={estilos.textoErro}>{messageError2}</Text>
             <Text style={estilos.texto}>Imagem</Text>
             <TouchableOpacity style={estilos.botaoImagem} ><Text style={estilos.imagem}>Câmera/Galeria de imagens</Text></TouchableOpacity>
-            </View>
             <Text style={estilos.textoErro}>{messageError3}</Text>
-            <View style= {estilos.rodape}>
+          </View>
+            
+          <View style= {estilos.rodape}> 
               <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="CADASTRAR" width={330} funcao={goToHome}></CustomButton>
-            </View>
+          </View>
 
         </View>
     );
