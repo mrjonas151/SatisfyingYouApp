@@ -2,19 +2,43 @@ import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton"
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth_mod } from "../firebase/config";
 
 const App = (props) => {
     const [email, setEmail] = useState('')
     const [messageError, setMessageError] = useState('')
     const [isValid, setIsValid] = useState(false)
   
+
+    /*const recover = () => {
+      sendPasswordResetEmail(auth_mod, email).then( (recoverEmail) => {
+        console.log("Email de redefinicao enviado com sucesso, verifique a caixa de entrada" + JSON.stringify(recoverEmail))
+      }).catch( (error) => {
+        console.log("Erro ao enviar email de redefinicao" + JSON.stringify(error))
+      })
+    }*/
+
     const goToLogin = () => {
+      if(isValid){
+        sendPasswordResetEmail(auth_mod, email).then( () => {
+          console.log("Email de redefinicao enviado com sucesso, verifique a caixa de entrada")
+          props.navigation.navigate("Login")
+        }).catch( (error) => {
+          console.log("Erro ao enviar email de redefinicao" + JSON.stringify(error))
+        })
+      }else{
+        setMessageError("E-mail parece ser inválido")
+      }
+    }
+
+    /*const goToLogin = () => {
       if(isValid){
         props.navigation.navigate("Login")
       }else{
         setMessageError("E-mail parece ser inválido")
       }
-    }
+    }*/
 
     const handleEmailChange = (text) => {
       setEmail(text)

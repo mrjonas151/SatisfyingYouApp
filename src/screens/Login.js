@@ -3,6 +3,8 @@ import { useState } from "react";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton"
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth_mod } from "../firebase/config";
 
 const Login = (props) => {
     const [email, setEmail] = useState('')
@@ -10,17 +12,41 @@ const Login = (props) => {
     const [messageError, setMessageError] = useState('')
     const [isValid, setIsValid] = useState(false)
 
+
+    /*const autenticar = () => { 
+      signInWithEmailAndPassword(auth_mod, email, password).then( (userLogged) => { 
+        console.log("Autenticado com sucesso" + JSON.stringify(userLogged))
+      }).catch( (error) => {
+        console("Erro ao autenticar" + JSON.stringify(error))
+      })
+    } */
+
     const goToCadastro = () => {
-        props.navigation.navigate("CriarConta")
+      props.navigation.navigate("CriarConta")
+    }
+
+    const goToHome = () => {
+      if(isValid){
+        signInWithEmailAndPassword(auth_mod, email, password).then( (userLogged) => { 
+          console.log("Autenticado com sucesso" + JSON.stringify(userLogged))
+          props.navigation.navigate("Home")
+        }).catch( (error) => {
+          console.log("Erro ao autenticar" + JSON.stringify(error))
+        })
+        
+      }else{
+        setMessageError("E-mail e/ou senha inválidos.")
+      }
     }
   
+    /*
     const goToHome = () => {
       if(isValid){
         props.navigation.navigate("Home")
       }else{
         setMessageError("E-mail e/ou senha inválidos.")
       }
-    }
+    }*/
   
     const goToRecover = () => {
         props.navigation.navigate("RecuperarSenha")

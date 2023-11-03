@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton"
+import CustomButton from "../components/CustomButton";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth_mod } from "../firebase/config";
 
 const CriarConta = (props) => {
   const [email, setEmail] = useState('')
@@ -11,7 +13,31 @@ const CriarConta = (props) => {
   const [isEmailValid, setIsEmailValid] = useState(false)
   const [isPassValid, setIsPassValid] = useState(false)
 
+  /*Criando essa funcao primeiramente separado, mas depois encaixar ela no onPress de cadastrar, esse .then é caso dê certo a criação e o catch caso dê errado
+  const cadastrarUsuario = () => {
+    createUserWithEmailAndPassword(auth_mod, email, password).then( (userCredential) => {
+      console.log("Usuario criado com sucesso" + userCredential);
+    }).catch( (error) => {
+      console.log("Erro ao criar usuario: " + error);
+    })
+  }*/
+
   const goToLogin = () => {
+    if(isEmailValid && isPassValid){
+      createUserWithEmailAndPassword(auth_mod, email, password).then( (userCredential) => {
+        console.log("Usuario criado com sucesso" + JSON.stringify(userCredential));
+        props.navigation.navigate("Login")
+      }).catch( (error) => {
+        console.log("Erro ao criar usuario: " + JSON.stringify(error));
+      })
+    }else if(!isEmailValid){
+      setMessageError("E-mail parece ser inválido")
+    }else{
+      setMessageError("O campo repetir senha difere da senha")
+    }
+  }
+
+  /*const goToLogin = () => {
     if(isEmailValid && isPassValid){
       props.navigation.navigate("Login")
     }else if(!isEmailValid){
@@ -19,7 +45,7 @@ const CriarConta = (props) => {
     }else{
       setMessageError("O campo repetir senha difere da senha")
     }
-  }
+  } */
 
   const handleEmailChange = (text) => {
     setEmail(text)
