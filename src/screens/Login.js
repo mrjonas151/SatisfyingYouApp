@@ -32,8 +32,8 @@ const Login = (props) => {
           props.navigation.navigate("Home")
         }).catch( (error) => {
           console.log("Erro ao autenticar" + JSON.stringify(error))
+          setMessageError("E-mail e/ou senha inválidos.")
         })
-        
       }else{
         setMessageError("E-mail e/ou senha inválidos.")
       }

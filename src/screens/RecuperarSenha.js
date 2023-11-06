@@ -22,7 +22,7 @@ const App = (props) => {
     const goToLogin = () => {
       if(isValid){
         sendPasswordResetEmail(auth_mod, email).then( () => {
-          console.log("Email de redefinicao enviado com sucesso, verifique a caixa de entrada")
+          console.log("Email de redefinicao enviado com sucesso, caso o e-mail esteja cadastrado, você receberá uma mensagem para redefinicao")
           props.navigation.navigate("Login")
         }).catch( (error) => {
           console.log("Erro ao enviar email de redefinicao" + JSON.stringify(error))
