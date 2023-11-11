@@ -24,17 +24,26 @@ const NovaPesquisa = (props) => {
 
     const addPesquisa = () => {
       const docPesquisa = {
-        nome: nome,
-        data: data,
-        url: url
+        titulo: nome,
+        subtitulo: data,
+        imageUrl: url
       }
 
-      addDoc(pesquisaCollection, docPesquisa).then( (docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).catch( (erro) => { console.log("ERRO" +erro)})
+      addDoc(pesquisaCollection, docPesquisa).then( (docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).then(props.navigation.navigate("Home"))
+      .catch( (erro) => { console.log("ERRO" +erro)})
     }
+
+    /*const goToHome = () => {
+      if(isValid && isValidData){
+        props.navigation.navigate("Home")
+      }else{
+        setMessageError3("Nome e/ou Data inválidos.")
+      }
+    }*/
 
     const goToHome = () => {
       if(isValid && isValidData){
-        props.navigation.navigate("Home")
+        addPesquisa()
       }else{
         setMessageError3("Nome e/ou Data inválidos.")
       }

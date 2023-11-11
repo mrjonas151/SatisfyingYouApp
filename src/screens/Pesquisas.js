@@ -1,10 +1,32 @@
 import { View, Text, StyleSheet, FlatList, Image, TextInput } from "react-native"
 import CustomButton from "../components/CustomButton"
-import React from "react"
+import { React, useEffect, useState } from "react"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import { initializeFirestore, collection, addDoc, query, onSnapshot } from 'firebase/firestore';
+import app from "../firebase/config";
 
 const Pesquisas = (props) => {
+    const [listaPesquisas, setListaPesquisas] = useState();
+
+    db = initializeFirestore(app, {experimentalForceLongPolling:true})
+    pesquisaCollection = collection(db, "pesquisas")
+
+    useEffect ( () => {
+        const q = query(pesquisaCollection)
+
+        const  unsubscribe = onSnapshot(q, (snapshot) => {
+            const pesqs = []
+            snapshot.forEach( (doc) => {
+                pesqs.push({
+                    id: doc.id,
+                    ...doc.data()
+                })
+            })
+            setListaPesquisas(pesqs)
+        })
+    }, [])
+
 
     const goToNovaPesquisa = () => {
         props.navigation.navigate("NovaPesquisa")
@@ -52,7 +74,7 @@ const Pesquisas = (props) => {
                 <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    data={pesquisasData}
+                    data={listaPesquisas}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                     <TouchableOpacity style={estilos.box} onPress={() => goToAcoesPesquisa(item.id)}>
