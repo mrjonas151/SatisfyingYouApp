@@ -10,7 +10,7 @@ import { ActionModal } from "../components/ActionModal";
 import { initializeFirestore, collection, updateDoc, doc } from 'firebase/firestore';
 import app from "../firebase/config";
 
-const ModificarPesquisa = (props) => {
+const ModificarPesquisa = (props, {route}) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [data, setData] = useState('')
     const [nome, setNome] = useState('')
@@ -21,11 +21,13 @@ const ModificarPesquisa = (props) => {
     const [messageError3, setMessageError3] = useState('')
     const [url, setUrl] = useState('imagemtesteinicial.com') //depois testar a implementacao da imagem
 
+    const { pesquisaId } = route.params;
+
     db = initializeFirestore(app, {experimentalForceLongPolling:true})
     pesquisaCollection = collection(db, "pesquisas")
 
-    const changePesquisa = (id) => {
-      const pesqRef = doc(db, "pesquisas", id)
+    const changePesquisa = () => {
+      const pesqRef = doc(db, "pesquisas", pesquisaId)
 
       updateDoc(pesqRef, {
         titulo: nome,
@@ -33,6 +35,13 @@ const ModificarPesquisa = (props) => {
         imageUrl: url
       })
     }
+
+    /*const recuperarDados = (id) => {
+
+      setData()
+      setNome()
+      setUrl()
+    } */
 
     const goToHome = () => {
       if(isValid && isValidData){
@@ -67,10 +76,15 @@ const ModificarPesquisa = (props) => {
       }
     }
 
+    const testezinho = () => {
+      console.log(pesquisaId)
+    }
+
     return(
         <View style={estilos.main_view}>
 
           <View style={estilos.campos}>
+            <Button onPress={testezinho}>teste</Button>
             <Text style={estilos.texto}>Nome</Text>
             <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
             <Text style={estilos.texto}>Data</Text>

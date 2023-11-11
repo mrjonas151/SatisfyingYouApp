@@ -2,10 +2,13 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao.js';
 
-export default function AcoesPesquisa(props) {
+export default function AcoesPesquisa(props, {route}) {
+
+
+  const { pesquisaId } = route.params;
 
   const goModificarPesquisa = () => {
-    props.navigation.navigate('ModificarPesquisa')
+    props.navigation.navigate('ModificarPesquisa', {pesquisaId})
   }
 
   const goColeta = () => {
