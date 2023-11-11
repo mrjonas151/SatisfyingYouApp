@@ -77,15 +77,13 @@ const NovaPesquisa = (props) => {
     return(
         <View style={estilos.main_view}>
 
-          <View style={estilos.campos}>
+<View style={estilos.campos}>
             <Text style={estilos.texto}>Nome</Text>
             <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
-            <Text style={estilos.textoErro}>{messageError1}</Text>
-
             <Text style={estilos.texto}>Data</Text>
 
             <View style={estilos.calendario}>
-                <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
+            <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
                 <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
             </View>
 

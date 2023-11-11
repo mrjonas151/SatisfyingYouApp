@@ -7,14 +7,64 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
 import { useState } from "react";
 import { ActionModal } from "../components/ActionModal";
-import { initializeFirestore, collection, addDoc } from 'firebase/firestore';
+import { initializeFirestore, collection, updateDoc, doc } from 'firebase/firestore';
 import app from "../firebase/config";
 
 const ModificarPesquisa = (props) => {
     const [visibleModal, setVisibleModal] = useState(false);
+    const [data, setData] = useState('')
+    const [nome, setNome] = useState('')
+    const [isValid, setIsValid] = useState(false)
+    const [isValidData, setIsValidData] = useState(false)
+    const [messageError1, setMessageError1] = useState('Preencha o nome da pesquisa')
+    const [messageError2, setMessageError2] = useState('Preencha a data')
+    const [messageError3, setMessageError3] = useState('')
+    const [url, setUrl] = useState('imagemtesteinicial.com') //depois testar a implementacao da imagem
+
+    db = initializeFirestore(app, {experimentalForceLongPolling:true})
+    pesquisaCollection = collection(db, "pesquisas")
+
+    const changePesquisa = (id) => {
+      const pesqRef = doc(db, "pesquisas", id)
+
+      updateDoc(pesqRef, {
+        titulo: nome,
+        subtitulo: data,
+        imageUrl: url
+      })
+    }
 
     const goToHome = () => {
-      props.navigation.navigate("Home")
+      if(isValid && isValidData){
+        props.navigation.navigate("Home")
+      }else{
+        setMessageError3("Nome e/ou Data inválidos.")
+      }
+    }
+
+    const handleNomePesq = (text) => {
+      setMessageError3("")
+      setNome(text)
+      if (text===null || text === '' || text.length === 0) {
+        setIsValid(false)
+        setMessageError1("Preencha o nome da pesquisa")
+      }else{
+        setMessageError1("")
+        setIsValid(true)
+      }
+    }
+
+    const handleDataPesq = (text) => {
+      setMessageError2("")
+      setData(text)
+      const formaData = /^\d{2}\/\d{2}\/\d{4}$/;
+      if(text && formaData.test(text)){
+        setMessageError3("")
+        setIsValidData(true)
+      }else{
+        setIsValidData(false)
+        setMessageError2("Preencha a data")
+      }
     }
 
     return(
@@ -22,16 +72,18 @@ const ModificarPesquisa = (props) => {
 
           <View style={estilos.campos}>
             <Text style={estilos.texto}>Nome</Text>
-            <CustomInput value="Carnaval 2024"></CustomInput>
+            <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
             <Text style={estilos.texto}>Data</Text>
 
             <View style={estilos.calendario}>
-                <CustomInput width={290} value="16/02/2024"></CustomInput>
+            <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
                 <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
             </View>
 
+            <Text style={estilos.textoErro}>{messageError2}</Text>
             <Text style={estilos.texto}>Imagem</Text>
             <TouchableOpacity style={estilos.botaoImagem} ><Image style={estilos.imagem} source={require('../assets/images/Party_Popper_imag.png')} /></TouchableOpacity>
+            <Text style={estilos.textoErro}>{messageError3}</Text>
             </View>
 
             <View style= {estilos.rodape}>
@@ -97,7 +149,12 @@ const estilos = StyleSheet.create({
       }, 
       icone: {
         marginRight: 4,
-      }
+      },
+      textoErro: {
+        fontFamily: 'AveriaLibre-Regular',
+        color: '#FD7979',
+        fontSize: 18
+    }
 })
 
 export default ModificarPesquisa;

@@ -3,7 +3,7 @@ import CustomButton from "../components/CustomButton"
 import { React, useEffect, useState } from "react"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { initializeFirestore, collection, addDoc, query, onSnapshot } from 'firebase/firestore';
+import { initializeFirestore, collection, query, onSnapshot } from 'firebase/firestore';
 import app from "../firebase/config";
 
 const Pesquisas = (props) => {
