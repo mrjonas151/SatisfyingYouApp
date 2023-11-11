@@ -5,7 +5,8 @@ import CustomButton from "../components/CustomButton";
 import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { useState } from "react";
-
+import { initializeFirestore, collection, addDoc } from 'firebase/firestore';
+import app from "../firebase/config";
 
 const NovaPesquisa = (props) => {
     const [data, setData] = useState('')
@@ -15,6 +16,21 @@ const NovaPesquisa = (props) => {
     const [messageError1, setMessageError1] = useState('Preencha o nome da pesquisa')
     const [messageError2, setMessageError2] = useState('Preencha a data')
     const [messageError3, setMessageError3] = useState('')
+    const [url, setUrl] = useState('imagemtesteinicial.com') //depois testar a implementacao da imagem
+
+
+    db = initializeFirestore(app, {experimentalForceLongPolling:true})
+    pesquisaCollection = collection(db, "pesquisas")
+
+    const addPesquisa = () => {
+      const docPesquisa = {
+        nome: nome,
+        data: data,
+        url: url
+      }
+
+      addDoc(pesquisaCollection, docPesquisa).then( (docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).catch( (erro) => { console.log("ERRO" +erro)})
+    }
 
     const goToHome = () => {
       if(isValid && isValidData){

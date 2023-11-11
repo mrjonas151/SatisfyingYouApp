@@ -7,6 +7,8 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
 import { useState } from "react";
 import { ActionModal } from "../components/ActionModal";
+import { initializeFirestore, collection, addDoc } from 'firebase/firestore';
+import app from "../firebase/config";
 
 const ModificarPesquisa = (props) => {
     const [visibleModal, setVisibleModal] = useState(false);
