@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
 import { useState } from "react";
 import { ActionModal } from "../components/ActionModal";
-import { initializeFirestore, collection, updateDoc, doc } from 'firebase/firestore';
+import { initializeFirestore, collection, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import app from "../firebase/config";
 
 const ModificarPesquisa = (props, {route}) => {
@@ -21,7 +21,7 @@ const ModificarPesquisa = (props, {route}) => {
     const [messageError3, setMessageError3] = useState('')
     const [url, setUrl] = useState('imagemtesteinicial.com') //depois testar a implementacao da imagem
 
-    const { pesquisaId } = route.params;
+    const pesquisaId = props.route.params.pesquisaId;
 
     db = initializeFirestore(app, {experimentalForceLongPolling:true})
     pesquisaCollection = collection(db, "pesquisas")
@@ -36,6 +36,10 @@ const ModificarPesquisa = (props, {route}) => {
       })
     }
 
+    const deletePesquisa = () => {
+      deleteDoc(doc(db, "pesquisas", pesquisaId));
+    }
+
     /*const recuperarDados = (id) => {
 
       setData()
@@ -43,12 +47,18 @@ const ModificarPesquisa = (props, {route}) => {
       setUrl()
     } */
 
-    const goToHome = () => {
+    const goToHomeAfterModified = () => {
       if(isValid && isValidData){
+        changePesquisa();
         props.navigation.navigate("Home")
       }else{
         setMessageError3("Nome e/ou Data inválidos.")
       }
+    }
+
+    const goToHomeAfterDelete = () => {
+        deletePesquisa();
+        props.navigation.navigate("Home")
     }
 
     const handleNomePesq = (text) => {
@@ -76,15 +86,10 @@ const ModificarPesquisa = (props, {route}) => {
       }
     }
 
-    const testezinho = () => {
-      console.log(pesquisaId)
-    }
-
     return(
         <View style={estilos.main_view}>
 
           <View style={estilos.campos}>
-            <Button onPress={testezinho}>teste</Button>
             <Text style={estilos.texto}>Nome</Text>
             <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
             <Text style={estilos.texto}>Data</Text>
@@ -101,13 +106,13 @@ const ModificarPesquisa = (props, {route}) => {
             </View>
 
             <View style= {estilos.rodape}>
-              <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="Salvar" width={270} funcao={goToHome}></CustomButton>
+              <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="Salvar" width={270} funcao={goToHomeAfterModified}></CustomButton>
               <TouchableOpacity onPress={() => setVisibleModal(true)}><Icon name="delete" size={60} color="#FFF" /></TouchableOpacity>
             </View>
 
             <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
               <ActionModal 
-                handleConfirma={() => props.navigation.navigate("Home")} 
+                handleConfirma={goToHomeAfterDelete} 
                 handleCancel={() => props.navigation.navigate("AcoesPesquisa")}
               />
             </Modal>

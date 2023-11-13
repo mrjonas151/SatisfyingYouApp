@@ -5,16 +5,14 @@ import { DivPadrao } from '../components/DivPadrao.js';
 export default function AcoesPesquisa(props, {route}) {
 
 
-  const { pesquisaId } = route.params;
+  const pesquisaId = props.route.params.pesquisaId;
 
   const goModificarPesquisa = () => {
     props.navigation.navigate('ModificarPesquisa', {pesquisaId})
   }
 
   const goColeta = () => {
-    props.navigation.navigate('Coleta', {
-      title: props.route.params?.title,
-    });
+    props.navigation.navigate('Coleta', {pesquisaId});
   }
 
   const goRelatorio = () => {
