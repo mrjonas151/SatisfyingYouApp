@@ -13,15 +13,6 @@ const CriarConta = (props) => {
   const [isEmailValid, setIsEmailValid] = useState(false)
   const [isPassValid, setIsPassValid] = useState(false)
 
-  /*Criando essa funcao primeiramente separado, mas depois encaixar ela no onPress de cadastrar, esse .then é caso dê certo a criação e o catch caso dê errado
-  const cadastrarUsuario = () => {
-    createUserWithEmailAndPassword(auth_mod, email, password).then( (userCredential) => {
-      console.log("Usuario criado com sucesso" + userCredential);
-    }).catch( (error) => {
-      console.log("Erro ao criar usuario: " + error);
-    })
-  }*/
-
   const goToLogin = () => {
     if(isEmailValid && isPassValid){
       createUserWithEmailAndPassword(auth_mod, email, password).then( (userCredential) => {
@@ -36,16 +27,6 @@ const CriarConta = (props) => {
       setMessageError("O campo repetir senha difere da senha")
     }
   }
-
-  /*const goToLogin = () => {
-    if(isEmailValid && isPassValid){
-      props.navigation.navigate("Login")
-    }else if(!isEmailValid){
-      setMessageError("E-mail parece ser inválido")
-    }else{
-      setMessageError("O campo repetir senha difere da senha")
-    }
-  } */
 
   const handleEmailChange = (text) => {
     setEmail(text)

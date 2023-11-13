@@ -9,15 +9,6 @@ const App = (props) => {
     const [email, setEmail] = useState('')
     const [messageError, setMessageError] = useState('')
     const [isValid, setIsValid] = useState(false)
-  
-
-    /*const recover = () => {
-      sendPasswordResetEmail(auth_mod, email).then( (recoverEmail) => {
-        console.log("Email de redefinicao enviado com sucesso, verifique a caixa de entrada" + JSON.stringify(recoverEmail))
-      }).catch( (error) => {
-        console.log("Erro ao enviar email de redefinicao" + JSON.stringify(error))
-      })
-    }*/
 
     const goToLogin = () => {
       if(isValid){
@@ -31,14 +22,6 @@ const App = (props) => {
         setMessageError("E-mail parece ser inválido")
       }
     }
-
-    /*const goToLogin = () => {
-      if(isValid){
-        props.navigation.navigate("Login")
-      }else{
-        setMessageError("E-mail parece ser inválido")
-      }
-    }*/
 
     const handleEmailChange = (text) => {
       setEmail(text)

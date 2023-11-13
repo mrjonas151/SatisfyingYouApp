@@ -33,14 +33,6 @@ const NovaPesquisa = (props) => {
       .catch( (erro) => { console.log("ERRO" +erro)})
     }
 
-    /*const goToHome = () => {
-      if(isValid && isValidData){
-        props.navigation.navigate("Home")
-      }else{
-        setMessageError3("Nome e/ou Data inválidos.")
-      }
-    }*/
-
     const goToHome = () => {
       if(isValid && isValidData){
         addPesquisa()
