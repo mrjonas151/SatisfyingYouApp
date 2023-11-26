@@ -5,10 +5,13 @@ import CustomButton from "../components/CustomButton";
 import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionModal } from "../components/ActionModal";
 import { initializeFirestore, collection, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import app from "../firebase/config";
+import { useSelector } from "react-redux";
+
+
 
 const ModificarPesquisa = (props, {route}) => {
     const [visibleModal, setVisibleModal] = useState(false);
@@ -21,7 +24,16 @@ const ModificarPesquisa = (props, {route}) => {
     const [messageError3, setMessageError3] = useState('')
     const [url, setUrl] = useState('imagemtesteinicial.com') //depois testar a implementacao da imagem
 
-    const pesquisaId = props.route.params.pesquisaId;
+    const pesquisaId = useSelector(state => state.pesquisaId);
+    const nome_1 = useSelector(state => state.pesquisa.nome_1)
+    const data_1 = useSelector(state => state.pesquisa.data_1)
+    const imageUrl_1 = useSelector(state => state.pesquisa.imageUrl_1)
+
+    useEffect(() => {
+      setNome(nome_1)
+      setData(data_1)
+      setUrl(imageUrl_1)
+    }, [])
 
     db = initializeFirestore(app, {experimentalForceLongPolling:true})
     pesquisaCollection = collection(db, "pesquisas")

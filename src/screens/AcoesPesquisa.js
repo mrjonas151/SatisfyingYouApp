@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao.js';
+import { useSelector } from 'react-redux';
 
-export default function AcoesPesquisa(props, {route}) {
+export default function AcoesPesquisa(props) {
 
+  const nome = useSelector(state => state.pesquisa.nome)
+
+  useEffect(() => {
+    props.navigation.setOptions({
+      title: nome
+    })
+  }, [nome, props.navigation])
 
   const pesquisaId = props.route.params.pesquisaId;
 

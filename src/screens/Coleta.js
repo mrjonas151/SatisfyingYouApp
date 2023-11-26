@@ -1,8 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao';
+import { updateDoc, doc, getDoc } from "firebase/firestore";
+import { db } from '../firebase/config';
+import Icon from react-native-vector-icons/MaterialIcons;
+import { useSelector } from 'react-redux'
 
 export default function Coleta(props) {
+
+  const id = useSelector(state => state.pesquisa.id)
+  const pesquisaRef = doc(db, 'Pesquisas', id)
 
   const { title } = props.route.params;
 
@@ -12,6 +19,25 @@ export default function Coleta(props) {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
   : '';
+
+  const  updateVote = async (voteType) => {
+    try{
+      const docPesquisa = await getDoc(pesqisaRef)
+
+      if(docPesquisa.exists()){
+        const currentVotes = docPesquisa.data().votos
+        currentVotes = docPesquisa.data().votos
+        currentVotes[voteType] += 1;
+        await updateDoc(pesquisaRef, {votos: currentVotes})
+        console.log('Voto ${voteType} computado com sucesso!')
+        goAgradecimentoParticipacao
+      }else{
+        console.log("Documento não pode ser encontrado!")
+      }
+    }catch (error){
+      console.log("Erro ao computar voto... ", error)
+    }
+  };
 
   const goAgradecimentoParticipacao = () => {
     props.navigation.navigate('AgradecimentoParticipacao')
@@ -26,15 +52,25 @@ export default function Coleta(props) {
       <TouchableOpacity style={styles.botaoSair} onPress={goAcoesPesquisa}></TouchableOpacity>
       <Text style={styles.title}>O que você achou do Carnaval 2024?</Text>
       <View style={styles.squaresContainer}>
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={goAgradecimentoParticipacao} />
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={goAgradecimentoParticipacao} />
+        <TouchableOpacity onPress={() => updateVote('pessimo')}>
+          <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={goAgradecimentoParticipacao} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => updateVote('ruim')}>
+          <DivPadrao style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={goAgradecimentoParticipacao} />
+        </TouchableOpacity>
       </View>
       <View style={styles.squaresContainer}>
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Neutro" imageSource={require('../assets/images/Sentimento_Neutro.png')} onPress={goAgradecimentoParticipacao} />
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Bom" imageSource={require('../assets/images/Sentimento_Bom.png')} onPress={goAgradecimentoParticipacao} />
+        <TouchableOpacity onPress={() => updateVote('neutro')}>
+            <DivPadrao style={styles.div} textColor="#FFFFFF" text="Neutro" imageSource={require('../assets/images/Sentimento_Neutro.png')} onPress={goAgradecimentoParticipacao} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => updateVote('bom')}>
+            <DivPadrao style={styles.div} textColor="#FFFFFF" text="Bom" imageSource={require('../assets/images/Sentimento_Bom.png')} onPress={goAgradecimentoParticipacao} />
+        </TouchableOpacity>
       </View>
       <View style={styles.squaresContainer}>
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Excelente" imageSource={require('../assets/images/Sentimento_Excelente.png')} onPress={goAgradecimentoParticipacao} />
+        <TouchableOpacity onPress={() => updateVote('excelente')}>
+            <DivPadrao style={styles.div} textColor="#FFFFFF" text="Excelente" imageSource={require('../assets/images/Sentimento_Excelente.png')} onPress={goAgradecimentoParticipacao} />
+        </TouchableOpacity>
       </View>
     </View>
   );

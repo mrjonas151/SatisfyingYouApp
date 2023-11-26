@@ -1,9 +1,12 @@
 import {View, TouchableOpacity, Text, StyleSheet} from "react-native";
 import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import {useSelector} from "react-redux"
 
 
 const CustomDrawer = (props) => {
+
+    const email = useSelector(state => state.login.email)
 
     const goToLogin = () => {
         props.navigation.navigate("Login")
@@ -14,8 +17,9 @@ const CustomDrawer = (props) => {
 
     return (
         <DrawerContentScrollView {...props} style={estilos.menuColor}>
+            
             <View style={estilos.container}>
-                <Text style={estilos.textoUser}>usuario@dominio.com</Text>
+                <Text style={styles.textoUser}>{email}</Text>
                 <View style={estilos.textBarra}></View>
                 <TouchableOpacity style={estilos.menuPesquisa} onPress={goToHome}>
                     <Icon style={estilos.icone} name="description" />

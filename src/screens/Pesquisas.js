@@ -5,15 +5,18 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { initializeFirestore, collection, query, onSnapshot } from 'firebase/firestore';
 import app from "../firebase/config";
+import { reducerSetPesquisa } from "../redux/searchSlice";
+import { useDispatch } from 'react-redux';
 
 const Pesquisas = (props) => {
     const [listaPesquisas, setListaPesquisas] = useState();
 
     db = initializeFirestore(app, {experimentalForceLongPolling:true})
     pesquisaCollection = collection(db, "pesquisas")
+    const dispatch = useDispatch()
 
     useEffect ( () => {
-        const q = query(pesquisaCollection)
+        const q = query(pesquisaCollection, orderBy('nome', 'asc'))
 
         const  unsubscribe = onSnapshot(q, (snapshot) => {
             const pesqs = []
@@ -32,8 +35,28 @@ const Pesquisas = (props) => {
         props.navigation.navigate("NovaPesquisa")
     }
 
-    const goToAcoesPesquisa = (pesquisaId) => {
+    const goToAcoesPesquisa = async (pesquisaId) => {
         props.navigation.navigate("AcoesPesquisa", { pesquisaId});
+        try {
+            const docSnapshot = await getDoc(cardRef);
+            if (docSnapshot.exists()) {
+                const cardData = docSnapshot.data();
+
+                dispatch(reducerSetPesquisa({
+                    id: id,
+                    nome: cardData.nome,
+                    data: cardData.data,
+                    imageUrl: cardData.imageUrl
+                }))
+
+                props.navigation.navigate('AcoesPesquisa');
+            } else {
+                console.log('O documento é inexistente');
+            }
+        } catch (error) {
+            console.error('Erro ao obter dados do documento:', error);
+        }
+
     }
 
     const pesquisasData = [
