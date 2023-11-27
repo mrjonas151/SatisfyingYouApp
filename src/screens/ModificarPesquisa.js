@@ -9,11 +9,13 @@ import { useState, useEffect } from "react";
 import { ActionModal } from "../components/ActionModal";
 import { initializeFirestore, collection, updateDoc, doc, deleteDoc, query, onSnapshot, where } from 'firebase/firestore';
 import app from "../firebase/config";
+import Pesquisas from "./Pesquisas";
+import { ActionModalImagem } from "../components/ActionModalImagem";
 
 const ModificarPesquisa = (props, { route }) => {
   const [visibleModal, setVisibleModal] = useState(false);
-  const [data, setData] = useState('')
-  const [nome, setNome] = useState('')
+  const [data, setData] = useState("")
+  const [nome, setNome] = useState("")
   const [isValid, setIsValid] = useState(false)
   const [isValidData, setIsValidData] = useState(false)
   const [messageError1, setMessageError1] = useState('Preencha o nome da pesquisa')
@@ -23,6 +25,7 @@ const ModificarPesquisa = (props, { route }) => {
   const [url, setUrlImage] = useState('') //pega a url da imagem tirada
   const [img, setImage] = useState()//guarda dados img
   const [idImg, setIdImagem] = useState('')
+  const [idImgAntigo, setIdImgAntigo] = useState('')
 
   const pesquisaId = props.route.params.pesquisaId;
 
@@ -30,118 +33,199 @@ const ModificarPesquisa = (props, { route }) => {
   pesquisaCollection = collection(db, "pesquisas")
 
   useEffect(() => {
-    const q = query(pesquisaCollection)
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const pesqs = []
-      snapshot.forEach((doc) => {
-        pesqs.push({
-          id: doc.id,
-          ...doc.data()
+    const atualiza = async () => {
+      const q = query(pesquisaCollection)
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const pesqs = []
+        snapshot.forEach((doc) => {
+          pesqs.push({
+            id: doc.id,
+            ...doc.data()
+          })
         })
+        setListaPesquisas(pesqs)
+        const pe = (pesqs.find(pesqs => pesqs.id === pesquisaId))
+        setData(pe.subtitulo)
+        setNome(pe.titulo)
+        setIdImagem(pe.imageNome)
+        setUrlImage(pe.imageUrl)
+        setIdImgAntigo(pe.imageUrl)
       })
-      setListaPesquisas(pesqs)
-      const pesquisaEncontrada = mockListaPesquisas.find(pesqs => pesqs.id === pesquisaId);
-      setNome(pesquisaEncontrada.titulo)
-      setData(pesquisaEncontrada.subtitulo)
-      
-    })
+      return () => unsubscribe();
+    }
+    atualiza()
   }, [])
 
-const changePesquisa = async () => {
-  const pesqRef = doc(db, "pesquisas", pesquisaId)
+  const changePesquisa = async () => {
+    const pesqRef = doc(db, "pesquisas", pesquisaId)
+    if (idImgAntigo === idImg) {
+      console.log("IGUALALALALAL")
+      updateDoc(pesqRef, {
+        titulo: nome,
+        subtitulo: data
+      })
+    } else {
+      const imageRef = ref(getStorage(storage), idImg + '.jpeg') //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
+      const file = await fetch(img.uri) //referencia imagem da camera 
+      const blob = await file.blob()//extrai os bytes do arquivo
 
-  updateDoc(pesqRef, {
-    titulo: nome,
-    subtitulo: data,
-    imageUrl: url
-  })
-}
+      uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
+        .then(
+          (result) => { console.log("Arquivo enviado com sucesso.") },
+          getDownloadURL(imageRef)
+            .then(
+              (urlD) => {
+                updateDoc(pesqRef, {
+                  titulo: nome,
+                  subtitulo: data,
+                  imageUrl: urlD,
+                  imageNome: idImg + '.jpeg'
+                })
+              }
+            )
+            .catch(
+              (error) => (console.log("ERRO: " + JSON.stringify(error)))
+            )
 
-const deletePesquisa = () => {
-  deleteDoc(doc(db, "pesquisas", pesquisaId));
-}
+        )
+        .catch(
+          (error) => { console.log("ERRO ao enviar arquivo: " + JSON.stringify(error)) }
+        )
 
-/*const recuperarDados = (id) => {
+    }
+  }
 
-  setData()
-  setNome()
-  setUrl()
-} */
+  const deletePesquisa = () => {
+    deleteDoc(doc(db, "pesquisas", pesquisaId));
+  }
 
-const goToHomeAfterModified = () => {
-  if (isValid && isValidData) {
-    changePesquisa();
+  /*const recuperarDados = (id) => {
+  
+    setData()
+    setNome()
+    setUrl()
+  } */
+
+  const goToHomeAfterModified = () => {
+    if (isValid && isValidData) {
+      changePesquisa();
+      props.navigation.navigate("Home")
+    } else {
+      setMessageError3("Nome e/ou Data inválidos.")
+    }
+  }
+
+  const goToHomeAfterDelete = () => {
+    deletePesquisa();
     props.navigation.navigate("Home")
-  } else {
-    setMessageError3("Nome e/ou Data inválidos.")
   }
-}
 
-const goToHomeAfterDelete = () => {
-  deletePesquisa();
-  props.navigation.navigate("Home")
-}
-
-const handleNomePesq = (text) => {
-  setMessageError3("")
-  setNome(text)
-  if (text === null || text === '' || text.length === 0) {
-    setIsValid(false)
-    setMessageError1("Preencha o nome da pesquisa")
-  } else {
-    setMessageError1("")
-    setIsValid(true)
-  }
-}
-
-const handleDataPesq = (text) => {
-  setMessageError2("")
-  setData(text)
-  const formaData = /^\d{2}\/\d{2}\/\d{4}$/;
-  if (text && formaData.test(text)) {
+  const handleNomePesq = (text) => {
     setMessageError3("")
-    setIsValidData(true)
-  } else {
-    setIsValidData(false)
-    setMessageError2("Preencha a data")
+    setNome(text)
+    if (text === null || text === '' || text.length === 0) {
+      setIsValid(false)
+      setMessageError1("Preencha o nome da pesquisa")
+    } else {
+      setMessageError1("")
+      setIsValid(true)
+    }
   }
-}
 
-return (
-  <View style={estilos.main_view}>
+  const handleDataPesq = (text) => {
+    setMessageError2("")
+    setData(text)
+    const formaData = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (text && formaData.test(text)) {
+      setMessageError3("")
+      setIsValidData(true)
+    } else {
+      setIsValidData(false)
+      setMessageError2("Preencha a data")
+    }
+  }
 
-    <View style={estilos.campos}>
-      <Text style={estilos.texto}>Nome</Text>
-      <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
-      <Text style={estilos.textoErro}>{messageError1}</Text>
-      <Text style={estilos.texto}>Data</Text>
+  const capturarImage = () => {
+    launchCamera({ mediaType: 'photo', cameraType: 'back', quality: 1 })
+      .then(
+        (result) => {
+          setUrlImage(result.assets[0].uri)
+          setImage(result.assets[0])
+          setIdImagem(Date.now().toString())
+        }
+      )
+      .catch(
+        (error) => { console.log("Erro captura de imagem: " + JSON.stringify(error)) }
+      )
+    setVisibleModal(false)
+  }
 
-      <View style={estilos.calendario}>
-        <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
-        <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
+  const uploadImage = () => {
+    launchImageLibrary({ mediaType: 'photo', includeBase64: true })
+      .then(
+        (result) => {
+          setUrlImage(result.assets[0].uri)
+          setImage(result.assets[0])
+          setIdImagem(Date.now().toString());
+        }
+      )
+      .catch(
+        (error) => {
+          console.log("Erro captura de imagem: " + JSON.stringify(error))
+        }
+      )
+    setVisibleModal(false)
+  }
+
+  return (
+    <View style={estilos.main_view}>
+
+      <View style={estilos.campos}>
+        <Text style={estilos.texto}>Nome</Text>
+        <CustomInput onChangeText={handleNomePesq} value={nome}></CustomInput>
+        <Text style={estilos.textoErro}>{messageError1}</Text>
+        <Text style={estilos.texto}>Data</Text>
+
+        <View style={estilos.calendario}>
+          <CustomInput onChangeText={handleDataPesq} width={290} value={data}></CustomInput>
+          <TouchableOpacity style={estilos.botao} ><Icon style={estilos.icone} name="calendar-month" size={30} color="gray" /></TouchableOpacity>
+        </View>
+
+        <Text style={estilos.textoErro}>{messageError2}</Text>
+        <Text style={estilos.texto}>Imagem</Text>
+
+        { //se url tem conteudo, aparece imagem. Caso vazia, o botao.
+          url ?
+            <TouchableOpacity onPress={() => setVisibleModal(true)}>
+              <Image style={estilos.botaoImagem} source={{ uri: url }} />
+            </TouchableOpacity>
+            :
+            <TouchableOpacity onPress={() => setVisibleModal(true)} style={estilos.botaoImagem}><Text style={estilos.imagem} > Câmera/Galeria de imagens</Text></TouchableOpacity>
+        }
+        <Text style={estilos.textoErro}>{messageError3}</Text>
       </View>
 
-      <Text style={estilos.textoErro}>{messageError2}</Text>
-      <Text style={estilos.texto}>Imagem</Text>
-      <TouchableOpacity style={estilos.botaoImagem} ><Image style={estilos.imagem} source={require('../assets/images/Party_Popper_imag.png')} /></TouchableOpacity>
-      <Text style={estilos.textoErro}>{messageError3}</Text>
+      <View style={estilos.rodape}>
+        <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="Salvar" width={270} funcao={goToHomeAfterModified}></CustomButton>
+        <TouchableOpacity onPress={() => setVisibleModal(true)}><Icon name="delete" size={60} color="#FFF" /></TouchableOpacity>
+      </View>
+
+      <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
+        <ActionModal
+          handleConfirma={goToHomeAfterDelete}
+          handleCancel={() => props.navigation.navigate("AcoesPesquisa")}
+        />
+      </Modal>
+
+      <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
+        <ActionModalImagem
+          handleCamera={capturarImage}
+          handleGaleria={uploadImage}
+        />
+      </Modal>
+
     </View>
-
-    <View style={estilos.rodape}>
-      <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="Salvar" width={270} funcao={goToHomeAfterModified}></CustomButton>
-      <TouchableOpacity onPress={() => setVisibleModal(true)}><Icon name="delete" size={60} color="#FFF" /></TouchableOpacity>
-    </View>
-
-    <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
-      <ActionModal
-        handleConfirma={goToHomeAfterDelete}
-        handleCancel={() => props.navigation.navigate("AcoesPesquisa")}
-      />
-    </Modal>
-
-  </View>
-);
+  );
 }
 
 const estilos = StyleSheet.create({
