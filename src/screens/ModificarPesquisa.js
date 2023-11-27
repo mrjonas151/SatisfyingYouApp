@@ -9,18 +9,21 @@ import { useState, useEffect } from "react";
 import { ActionModal } from "../components/ActionModal";
 import { initializeFirestore, collection, updateDoc, doc, deleteDoc, query, onSnapshot, where } from 'firebase/firestore';
 import app from "../firebase/config";
+import storage from "../firebase/config";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Pesquisas from "./Pesquisas";
 import { ActionModalImagem } from "../components/ActionModalImagem";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
 const ModificarPesquisa = (props, { route }) => {
   const [visibleModal, setVisibleModal] = useState(false)
   const [visibleModal1, setVisibleModal1] = useState(false)
   const [data, setData] = useState("")
   const [nome, setNome] = useState("")
-  const [isValid, setIsValid] = useState(false)
-  const [isValidData, setIsValidData] = useState(false)
-  const [messageError1, setMessageError1] = useState('Preencha o nome da pesquisa')
-  const [messageError2, setMessageError2] = useState('Preencha a data')
+  const [isValid, setIsValid] = useState(true)
+  const [isValidData, setIsValidData] = useState(true)
+  const [messageError1, setMessageError1] = useState('')
+  const [messageError2, setMessageError2] = useState('')
   const [messageError3, setMessageError3] = useState('')
   const [listaPesquisas, setListaPesquisas] = useState();
   const [url, setUrlImage] = useState('') //pega a url da imagem tirada
@@ -50,26 +53,27 @@ const ModificarPesquisa = (props, { route }) => {
         setNome(pe.titulo)
         setIdImagem(pe.imageNome)
         setUrlImage(pe.imageUrl)
-        setIdImgAntigo(pe.imageUrl)
+        setIdImgAntigo(pe.imageNome)
       })
       return () => unsubscribe();
+      
     }
     atualiza()
   }, [])
 
   const changePesquisa = async () => {
     const pesqRef = doc(db, "pesquisas", pesquisaId)
-    if (idImgAntigo === idImg) {
-      console.log("IGUALALALALAL")
+    if (JSON.stringify(idImg) === JSON.stringify(idImgAntigo)) {
       updateDoc(pesqRef, {
         titulo: nome,
         subtitulo: data
       })
     } else {
-      const imageRef = ref(getStorage(storage), idImg + '.jpeg') //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
+      console.log("PASSSOU")
+      const imageRef = ref(getStorage(storage), idImgAntigo) //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
       const file = await fetch(img.uri) //referencia imagem da camera 
       const blob = await file.blob()//extrai os bytes do arquivo
-
+      console.log("PASSSOU")
       uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
         .then(
           (result) => { console.log("Arquivo enviado com sucesso.") },
@@ -80,7 +84,7 @@ const ModificarPesquisa = (props, { route }) => {
                   titulo: nome,
                   subtitulo: data,
                   imageUrl: urlD,
-                  imageNome: idImg + '.jpeg'
+                  imageNome: idImgAntigo
                 })
               }
             )
