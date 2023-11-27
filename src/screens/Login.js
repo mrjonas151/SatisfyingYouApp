@@ -19,7 +19,6 @@ const Login = (props) => {
     const goToHome = () => {
       if(isValid){
         signInWithEmailAndPassword(auth_mod, email, password).then( (userLogged) => { 
-          console.log("Autenticado com sucesso" + JSON.stringify(userLogged))
           props.navigation.navigate("Home")
         }).catch( (error) => {
           console.log("Erro ao autenticar" + JSON.stringify(error))

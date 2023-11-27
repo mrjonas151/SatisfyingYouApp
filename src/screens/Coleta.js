@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao';
+import { initializeFirestore, collection } from 'firebase/firestore';
+import app from '../firebase/config';
+import { useEffect } from 'react';
+import { doc, updateDoc, query, onSnapshot } from 'firebase/firestore';
 
 export default function Coleta(props) {
 
+  const [listaPesquisas, setListaPesquisas] = useState();
+  const [vp, setVp] = useState(0);
+  const [vr, setVr] = useState(0);
+  const [vn, setVn] = useState(0);
+  const [vb, setVb] = useState(0);
+  const [ve, setVe] = useState(0);
+
+  const pesquisaId = props.route.params.pesquisaId;
   db = initializeFirestore(app, { experimentalForceLongPolling: true })
   pesquisaCollection = collection(db, "pesquisas")
 
@@ -16,8 +28,66 @@ export default function Coleta(props) {
       .join(' ')
   : '';
 
-  const coletarDados = () => {
-    
+  useEffect(() => {
+    const atualiza = async () => {
+      const q = query(pesquisaCollection)
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const pesqs = []
+        snapshot.forEach((doc) => {
+          pesqs.push({
+            id: doc.id,
+            ...doc.data()
+          })
+        })
+        setListaPesquisas(pesqs)
+        const pe = (pesqs.find(pesqs => pesqs.id === pesquisaId))
+          setVp(pe.vp)
+          setVr(pe.vr)
+          setVn(pe.vn)
+          setVb(pe.vb)
+          setVe(pe.ve)
+      })
+      return () => unsubscribe();
+      
+    }
+    atualiza()
+  }, [])
+
+  const coletarAvaliacao = (tipo) => {
+    const pesqRef = doc(db, "pesquisas", pesquisaId)
+    if(tipo === 'pessimo'){
+      const pessimo = vp + 1;
+      setVp(pessimo)
+      updateDoc(pesqRef, {
+        vp: vp
+      })
+    }else if(tipo === 'ruim'){
+      const ruim = vr + 1;
+      setVr(ruim)
+      updateDoc(pesqRef, {
+        vr: vr
+      })
+    }else if(tipo === 'neutro'){
+      const neutro = vn + 1;
+      setVp(neutro)
+      updateDoc(pesqRef, {
+        vn: vn
+      })
+    }else if(tipo === 'bom'){
+      const bom = vb + 1;
+      setVp(bom)
+      updateDoc(pesqRef, {
+        vb: vb
+      })
+    }else if(tipo === 'excelente'){
+      const excelente = ve + 1;
+      setVp(excelente)
+      updateDoc(pesqRef, {
+        ve: ve
+      })
+    }else{
+      console.log("ERRO")
+    }
   }
 
   const goAgradecimentoParticipacao = () => {
@@ -33,15 +103,15 @@ export default function Coleta(props) {
       <TouchableOpacity style={styles.botaoSair} onPress={goAcoesPesquisa}></TouchableOpacity>
       <Text style={styles.title}>O que você achou do Carnaval 2024?</Text>
       <View style={styles.squaresContainer}>
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={goAgradecimentoParticipacao} />
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={() => coletarAvaliacao('pessimo')} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={() => coletarAvaliacao('ruim')} />
       </View>
       <View style={styles.squaresContainer}>
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Neutro" imageSource={require('../assets/images/Sentimento_Neutro.png')} onPress={goAgradecimentoParticipacao} />
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Bom" imageSource={require('../assets/images/Sentimento_Bom.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Neutro" imageSource={require('../assets/images/Sentimento_Neutro.png')} onPress={() => coletarAvaliacao('neutro')} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Bom" imageSource={require('../assets/images/Sentimento_Bom.png')} onPress={() => coletarAvaliacao('bom')} />
       </View>
       <View style={styles.squaresContainer}>
-        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Excelente" imageSource={require('../assets/images/Sentimento_Excelente.png')} onPress={goAgradecimentoParticipacao} />
+        <DivPadrao style={styles.div} textColor="#FFFFFF" text="Excelente" imageSource={require('../assets/images/Sentimento_Excelente.png')} onPress={() => coletarAvaliacao('excelente')} />
       </View>
     </View>
   );
