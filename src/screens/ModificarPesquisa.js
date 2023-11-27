@@ -22,9 +22,9 @@ const ModificarPesquisa = (props, { route }) => {
   const [nome, setNome] = useState("")
   const [isValid, setIsValid] = useState(true)
   const [isValidData, setIsValidData] = useState(true)
-  const [messageError1, setMessageError1] = useState('')
-  const [messageError2, setMessageError2] = useState('')
-  const [messageError3, setMessageError3] = useState('')
+  const [messageError1, setMessageError1] = useState("")
+  const [messageError2, setMessageError2] = useState("")
+  const [messageError3, setMessageError3] = useState("")
   const [listaPesquisas, setListaPesquisas] = useState();
   const [url, setUrlImage] = useState('') //pega a url da imagem tirada
   const [img, setImage] = useState()//guarda dados img
@@ -56,7 +56,6 @@ const ModificarPesquisa = (props, { route }) => {
         setIdImgAntigo(pe.imageNome)
       })
       return () => unsubscribe();
-      
     }
     atualiza()
   }, [])
@@ -103,13 +102,6 @@ const ModificarPesquisa = (props, { route }) => {
   const deletePesquisa = () => {
     deleteDoc(doc(db, "pesquisas", pesquisaId));
   }
-
-  /*const recuperarDados = (id) => {
-  
-    setData()
-    setNome()
-    setUrl()
-  } */
 
   const goToHomeAfterModified = () => {
     if (isValid && isValidData) {

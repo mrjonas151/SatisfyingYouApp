@@ -43,7 +43,12 @@ const NovaPesquisa = (props) => {
                 titulo: nome,
                 subtitulo: data,
                 imageUrl: urlD,
-                imageNome: idImg+'.jpeg'
+                imageNome: idImg+'.jpeg',
+                vp: 0,
+                vr: 0,
+                vn: 0,
+                vb: 0,
+                ve: 0
               }
               addDoc(pesquisaCollection, docPesquisa).then((docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).then(props.navigation.navigate("Home"))
                 .catch((erro) => { console.log("ERRO" + erro) })
