@@ -4,6 +4,9 @@ import { DivPadrao } from '../components/DivPadrao';
 
 export default function Coleta(props) {
 
+  db = initializeFirestore(app, { experimentalForceLongPolling: true })
+  pesquisaCollection = collection(db, "pesquisas")
+
   const { title } = props.route.params;
 
   const formattedTitle = (typeof title === 'string' && title.trim() !== '')
@@ -12,6 +15,10 @@ export default function Coleta(props) {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
   : '';
+
+  const coletarDados = () => {
+    
+  }
 
   const goAgradecimentoParticipacao = () => {
     props.navigation.navigate('AgradecimentoParticipacao')
