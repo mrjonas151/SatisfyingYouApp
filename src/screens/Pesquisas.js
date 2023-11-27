@@ -9,15 +9,15 @@ import app from "../firebase/config";
 const Pesquisas = (props) => {
     const [listaPesquisas, setListaPesquisas] = useState();
 
-    db = initializeFirestore(app, {experimentalForceLongPolling:true})
+    db = initializeFirestore(app, { experimentalForceLongPolling: true })
     pesquisaCollection = collection(db, "pesquisas")
 
-    useEffect ( () => {
+    useEffect(() => {
         const q = query(pesquisaCollection)
 
-        const  unsubscribe = onSnapshot(q, (snapshot) => {
+        const unsubscribe = onSnapshot(q, (snapshot) => {
             const pesqs = []
-            snapshot.forEach( (doc) => {
+            snapshot.forEach((doc) => {
                 pesqs.push({
                     id: doc.id,
                     ...doc.data()
@@ -33,14 +33,14 @@ const Pesquisas = (props) => {
     }
 
     const goToAcoesPesquisa = (pesquisaId) => {
-        props.navigation.navigate("AcoesPesquisa", { pesquisaId});
+        props.navigation.navigate("AcoesPesquisa", { pesquisaId });
     }
 
-    return(
+    return (
         <View style={estilos.fundo}>
             <View style={estilos.pesquisa}>
                 <View style={estilos.lupa}>
-                    <Icon name="search" size={40} style={{color: '#8B8B8B'}}/>
+                    <Icon name="search" size={40} style={{ color: '#8B8B8B' }} />
                 </View>
                 <TextInput
                     style={estilos.texto}
@@ -56,34 +56,34 @@ const Pesquisas = (props) => {
                     data={listaPesquisas}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
-                    <TouchableOpacity style={estilos.box} onPress={() => goToAcoesPesquisa(item.id)}>
-                        
-                            <Image source={{ uri: item.imageUrl}} style={estilos.image} resizeMode="contain"/>
+                        <TouchableOpacity style={estilos.box} onPress={() => goToAcoesPesquisa(item.id)}>
+
+                            <Image source={{ uri: item.imageUrl }} style={estilos.image} resizeMode="contain" />
                             <Text style={estilos.titulo}>{item.titulo}</Text>
                             <Text style={estilos.subtitulo}>{item.subtitulo}</Text>
-                            
-                        
-                    </TouchableOpacity>
+
+
+                        </TouchableOpacity>
                     )}
                 />
             </View>
 
             <View>
-                <CustomButton  backgroundColor= '#37BD6D' 
-                height={50}  texto="NOVA PESQUISA"
-                funcao={goToNovaPesquisa}></CustomButton>
+                <CustomButton backgroundColor='#37BD6D'
+                    height={50} texto="NOVA PESQUISA"
+                    funcao={goToNovaPesquisa}></CustomButton>
             </View>
         </View>
     )
 }
 
 const estilos = StyleSheet.create({
-    pesquisa:{
+    pesquisa: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
     },
-    lupa:{  
+    lupa: {
         backgroundColor: 'white',
         padding: 3.5
     },
@@ -96,11 +96,11 @@ const estilos = StyleSheet.create({
         backgroundColor: 'white',
         fontFamily: 'AveriaLibre-Regular'
     },
-    fundo:{
+    fundo: {
         backgroundColor: "#372775",
         height: '100%',
         padding: 20,
-        flexDirection:"column",
+        flexDirection: "column",
         justifyContent: "space-evenly"
     },
 

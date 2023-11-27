@@ -8,7 +8,7 @@ const CustomButton = (props) => {
     const marginBottom = props.marginBottom || 10;
     const width = props.width;
 
-    return(
+    return (
         <TouchableOpacity style={[estilos.fundo, { backgroundColor, height, marginBottom, width }]} onPress={props.funcao}>
             <Text style={estilos.texto}>{texto}</Text>
         </TouchableOpacity>

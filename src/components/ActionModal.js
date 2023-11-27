@@ -1,8 +1,8 @@
 import React from 'react'
-import {View, SafeAreaView, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { View, SafeAreaView, TouchableOpacity, Text, StyleSheet } from 'react-native'
 
-export function ActionModal({handleConfirma, handleCancel}) {
-    return(
+export function ActionModal({ handleConfirma, handleCancel }) {
+    return (
         <SafeAreaView style={estilos.container}>
             <View style={estilos.main_view}>
                 <View style={estilos.cTitulo}>
@@ -19,7 +19,7 @@ export function ActionModal({handleConfirma, handleCancel}) {
 }
 
 const estilos = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -29,14 +29,14 @@ const estilos = StyleSheet.create({
         height: 215,
         width: 340
     },
-    texto:{
+    texto: {
         fontSize: 25,
         fontFamily: 'AveriaLibre-Regular',
         color: 'white',
         textAlign: 'center'
-        
+
     },
-    cButton:{
+    cButton: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 30
@@ -48,7 +48,7 @@ const estilos = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    bCancela:{
+    bCancela: {
         backgroundColor: '#419ED7',
         height: 50,
         width: 150,

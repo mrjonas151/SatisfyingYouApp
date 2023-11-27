@@ -1,5 +1,5 @@
-import {View, TouchableOpacity, Text, StyleSheet} from "react-native";
-import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 
@@ -26,21 +26,21 @@ const CustomDrawer = (props) => {
                     <Text style={estilos.textoUser} >Sair</Text>
                 </TouchableOpacity>
             </View>
-            
+
         </DrawerContentScrollView>
     )
 }
 
 const estilos = StyleSheet.create({
-    menuPesquisa:{
+    menuPesquisa: {
         top: 70,
         flexDirection: "row",
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "flex-start",
         width: 220,
         position: 'absolute',
     },
-    menuSair:{
+    menuSair: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
@@ -60,7 +60,7 @@ const estilos = StyleSheet.create({
         top: 40,
         position: 'absolute',
     },
-    icone:{
+    icone: {
         fontSize: 40,
         color: "white",
         right: 5
@@ -72,7 +72,7 @@ const estilos = StyleSheet.create({
         marginTop: 35,
         flexDirection: "column",
         alignItems: "center",
-        justifyContent:"space-between",
+        justifyContent: "space-between",
         height: 700
     }
 })

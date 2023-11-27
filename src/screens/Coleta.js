@@ -22,11 +22,11 @@ export default function Coleta(props) {
   const { title } = props.route.params;
 
   const formattedTitle = (typeof title === 'string' && title.trim() !== '')
-  ? title
+    ? title
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ')
-  : '';
+    : '';
 
   useEffect(() => {
     const atualiza = async () => {
@@ -41,53 +41,56 @@ export default function Coleta(props) {
         })
         setListaPesquisas(pesqs)
         const pe = (pesqs.find(pesqs => pesqs.id === pesquisaId))
-          setVp(pe.vp)
-          setVr(pe.vr)
-          setVn(pe.vn)
-          setVb(pe.vb)
-          setVe(pe.ve)
+        setVp(pe.vp)
+        setVr(pe.vr)
+        setVn(pe.vn)
+        setVb(pe.vb)
+        setVe(pe.ve)
       })
       return () => unsubscribe();
-      
+
     }
     atualiza()
   }, [])
 
-  const coletarAvaliacao = (tipo) => {
+  const coletarAvaliacao = async (tipo) => {
     const pesqRef = doc(db, "pesquisas", pesquisaId)
-    if(tipo === 'pessimo'){
-      const pessimo = vp + 1;
-      setVp(pessimo)
-      updateDoc(pesqRef, {
-        vp: vp
-      })
-    }else if(tipo === 'ruim'){
-      const ruim = vr + 1;
-      setVr(ruim)
-      updateDoc(pesqRef, {
-        vr: vr
-      })
-    }else if(tipo === 'neutro'){
-      const neutro = vn + 1;
-      setVp(neutro)
-      updateDoc(pesqRef, {
-        vn: vn
-      })
-    }else if(tipo === 'bom'){
-      const bom = vb + 1;
-      setVp(bom)
-      updateDoc(pesqRef, {
-        vb: vb
-      })
-    }else if(tipo === 'excelente'){
-      const excelente = ve + 1;
-      setVp(excelente)
-      updateDoc(pesqRef, {
-        ve: ve
-      })
-    }else{
+
+    if (tipo === 'pessimo') {
+      setVp((prevVp) => {
+        const pessimo = prevVp + 1;
+        updateDoc(pesqRef, { vp: pessimo });
+        return pessimo;
+      });
+    } else if (tipo === 'ruim') {
+      setVr((prevVr) => {
+        const ruim = prevVr + 1;
+        updateDoc(pesqRef, { vr: ruim });
+        return ruim;
+      });
+    } else if (tipo === 'neutro') {
+      setVn((prevVn) => {
+        const neutro = prevVn + 1;
+        updateDoc(pesqRef, { vn: neutro });
+        return neutro;
+      });
+    } else if (tipo === 'bom') {
+      setVb((prevVb) => {
+        const bom = prevVb + 1;
+        updateDoc(pesqRef, { vb: bom });
+        return bom;
+      });
+    } else if (tipo === 'excelente') {
+      setVe((prevVe) => {
+        const excelente = prevVe + 1;
+        updateDoc(pesqRef, { ve: excelente });
+        return excelente;
+      });
+    } else {
       console.log("ERRO")
     }
+
+    props.navigation.navigate("AgradecimentoParticipacao");
   }
 
   const goAgradecimentoParticipacao = () => {
@@ -95,7 +98,7 @@ export default function Coleta(props) {
   }
 
   const goAcoesPesquisa = () => {
-    props.navigation.navigate('AcoesPesquisa')
+    props.navigation.navigate('AcoesPesquisa', { pesquisaId })
   }
 
   return (

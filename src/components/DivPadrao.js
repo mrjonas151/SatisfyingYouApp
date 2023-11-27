@@ -11,13 +11,13 @@ export const DivPadrao = ({ color, textColor, onPress, width, style, disabled, i
       backgroundColor: 'white',
       padding: 10,
       borderRadius: 5,
-      alignItems: 'center', 
+      alignItems: 'center',
       width: width || 100,
     },
     image: {
-      width: 80, 
-      height: 80, 
-      marginBottom: 10, 
+      width: 80,
+      height: 80,
+      marginBottom: 10,
     },
     text: {
       color: textColor,

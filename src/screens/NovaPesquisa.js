@@ -43,7 +43,7 @@ const NovaPesquisa = (props) => {
                 titulo: nome,
                 subtitulo: data,
                 imageUrl: urlD,
-                imageNome: idImg+'.jpeg',
+                imageNome: idImg + '.jpeg',
                 vp: 0,
                 vr: 0,
                 vn: 0,
@@ -151,7 +151,7 @@ const NovaPesquisa = (props) => {
         { //se url tem conteudo, aparece imagem. Caso vazia, o botao.
           url ?
             <TouchableOpacity onPress={() => setVisibleModal(true)}>
-              <Image style={estilos.botaoImagem}  source={{ uri: url }} />
+              <Image style={estilos.botaoImagem} source={{ uri: url }} />
             </TouchableOpacity>
             :
             <TouchableOpacity onPress={() => setVisibleModal(true)} style={estilos.botaoImagem}><Text style={estilos.imagem} > Câmera/Galeria de imagens</Text></TouchableOpacity>

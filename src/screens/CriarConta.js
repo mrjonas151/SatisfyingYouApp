@@ -14,16 +14,16 @@ const CriarConta = (props) => {
   const [isPassValid, setIsPassValid] = useState(false)
 
   const goToLogin = () => {
-    if(isEmailValid && isPassValid){
-      createUserWithEmailAndPassword(auth_mod, email, password).then( (userCredential) => {
+    if (isEmailValid && isPassValid) {
+      createUserWithEmailAndPassword(auth_mod, email, password).then((userCredential) => {
         console.log("Usuario criado com sucesso" + JSON.stringify(userCredential));
         props.navigation.navigate("Login")
-      }).catch( (error) => {
+      }).catch((error) => {
         console.log("Erro ao criar usuario: " + JSON.stringify(error));
       })
-    }else if(!isEmailValid){
+    } else if (!isEmailValid) {
       setMessageError("E-mail parece ser inválido")
-    }else{
+    } else {
       setMessageError("O campo repetir senha difere da senha")
     }
   }
@@ -34,7 +34,7 @@ const CriarConta = (props) => {
     const testeEmail = emailRegex.test(text)
     if (!testeEmail) {
       setIsEmailValid(false)
-    }else{
+    } else {
       setMessageError("")
       setIsEmailValid(true)
     }
@@ -46,34 +46,34 @@ const CriarConta = (props) => {
 
   const handleRepeatPasswordChange = (text) => {
     setRepeatPass(text)
-    if(text != password){
+    if (text != password) {
       setIsPassValid(false)
-    }else{
+    } else {
       setIsPassValid(true)
       setMessageError("")
     }
   }
 
-  return(
-      <View style={estilos.main_view}>
-        <View style={estilos.tituloContainer}>
+  return (
+    <View style={estilos.main_view}>
+      <View style={estilos.tituloContainer}>
       </View>
 
-        <View style = {estilos.inputContainer}>
-          <Text style = {estilos.textoLogin}>E-mail</Text>
-          <CustomInput onChangeText={handleEmailChange} isSecure={false} value={email} />
-          <Text style = {estilos.textoLogin}>Senha</Text>
-          <CustomInput onChangeText={handlePasswordChange} isSecure={true} value={password} />
-          <Text style = {estilos.textoLogin}>Repetir senha</Text>
-          <CustomInput onChangeText={handleRepeatPasswordChange} isSecure={true} value={repeatPass} />
-          <Text style={estilos.textoErro}>{messageError}</Text>
-          </View>
-
-        <View style = {estilos.buttonContainer}>
-          <CustomButton  backgroundColor= '#37BD6D' height={50}  marginBottom={40} texto="CADASTRAR" funcao={goToLogin}></CustomButton>
-        </View>
-
+      <View style={estilos.inputContainer}>
+        <Text style={estilos.textoLogin}>E-mail</Text>
+        <CustomInput onChangeText={handleEmailChange} isSecure={false} value={email} />
+        <Text style={estilos.textoLogin}>Senha</Text>
+        <CustomInput onChangeText={handlePasswordChange} isSecure={true} value={password} />
+        <Text style={estilos.textoLogin}>Repetir senha</Text>
+        <CustomInput onChangeText={handleRepeatPasswordChange} isSecure={true} value={repeatPass} />
+        <Text style={estilos.textoErro}>{messageError}</Text>
       </View>
+
+      <View style={estilos.buttonContainer}>
+        <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={40} texto="CADASTRAR" funcao={goToLogin}></CustomButton>
+      </View>
+
+    </View>
   );
 }
 
