@@ -11,6 +11,7 @@ import storage from "../firebase/config";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+
 const NovaPesquisa = (props) => {
   const [data, setData] = useState('')
   const [nome, setNome] = useState('')
@@ -27,20 +28,21 @@ const NovaPesquisa = (props) => {
 
   const addPesquisa = async () => {
 
-    const imageRef = ref(storage, "minhaimagem.jpeg") //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
-    const file = await fetch(url) //referencia imagem da camera 
+    console.log("dehfwfiuwenfwuefweufweiufnweifwefbewfbwefew")
+    const imageRef = ref(storage, "minhaimg.jpeg") //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
+    const file = await fetch(img.uri) //referencia imagem da camera 
     const blob = await file.blob()//extrai os bytes do arquivo
-
-    uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
+    
+    await uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
       .then(
         (result) => { console.log("Arquivo enviado com sucesso.") },
-        getDownloadURL(imageRef)
+        await getDownloadURL(imageRef)
           .then(
-            (url) => {
+            (urlD) => {
               const docPesquisa = {
                 titulo: nome,
                 subtitulo: data,
-                imageUrl: "teste.jpeg"
+                imageUrl: urlD
               }
               addDoc(pesquisaCollection, docPesquisa).then((docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).then(props.navigation.navigate("Home"))
               .catch((erro) => { console.log("ERRO" + erro) })
