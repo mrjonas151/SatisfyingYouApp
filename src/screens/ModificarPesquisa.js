@@ -37,7 +37,7 @@ const ModificarPesquisa = (props, { route }) => {
   pesquisaCollection = collection(db, "pesquisas")
 
   useEffect(() => {
-    const atualiza = async () => {
+    const atualiza = () => {
       const q = query(pesquisaCollection)
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const pesqs = []
@@ -54,7 +54,9 @@ const ModificarPesquisa = (props, { route }) => {
         setIdImagem(pe.imageNome)
         setUrlImage(pe.imageUrl)
         setIdImgAntigo(pe.imageNome)
-      })
+
+
+      });
       return () => unsubscribe();
     }
     atualiza()
@@ -68,11 +70,10 @@ const ModificarPesquisa = (props, { route }) => {
         subtitulo: data
       })
     } else {
-      console.log("PASSSOU")
+
       const imageRef = ref(getStorage(storage), idImgAntigo) //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
       const file = await fetch(img.uri) //referencia imagem da camera 
       const blob = await file.blob()//extrai os bytes do arquivo
-      console.log("PASSSOU")
       uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
         .then(
           (result) => { console.log("Arquivo enviado com sucesso.") },
@@ -154,7 +155,7 @@ const ModificarPesquisa = (props, { route }) => {
       .catch(
         (error) => { console.log("Erro captura de imagem: " + JSON.stringify(error)) }
       )
-    setVisibleModal(false)
+    setVisibleModal1(false)
   }
 
   const uploadImage = () => {
@@ -171,7 +172,7 @@ const ModificarPesquisa = (props, { route }) => {
           console.log("Erro captura de imagem: " + JSON.stringify(error))
         }
       )
-    setVisibleModal(false)
+    setVisibleModal1(false)
   }
 
   return (
@@ -193,11 +194,11 @@ const ModificarPesquisa = (props, { route }) => {
 
         { //se url tem conteudo, aparece imagem. Caso vazia, o botao.
           url ?
-            <TouchableOpacity onPress={() => setVisibleModal(true)}>
+            <TouchableOpacity onPress={() => setVisibleModal1(true)}>
               <Image style={estilos.botaoImagem} source={{ uri: url }} />
             </TouchableOpacity>
             :
-            <TouchableOpacity onPress={() => setVisibleModal(true)} style={estilos.botaoImagem}><Text style={estilos.imagem} > Câmera/Galeria de imagens</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => setVisibleModal1(true)} style={estilos.botaoImagem}><Text style={estilos.imagem} > Câmera/Galeria de imagens</Text></TouchableOpacity>
         }
         <Text style={estilos.textoErro}>{messageError3}</Text>
       </View>
@@ -210,11 +211,11 @@ const ModificarPesquisa = (props, { route }) => {
       <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
         <ActionModal
           handleConfirma={goToHomeAfterDelete}
-          handleCancel={() => props.navigation.navigate("AcoesPesquisa")}
+          handleCancel={() => props.navigation.navigate("AcoesPesquisa", { pesquisaId })}
         />
       </Modal>
 
-      <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
+      <Modal visible={visibleModal1} transparent={true} onRequestClose={() => setVisibleModal1(false)}>
         <ActionModalImagem
           handleCamera={capturarImage}
           handleGaleria={uploadImage}
