@@ -13,7 +13,8 @@ import Pesquisas from "./Pesquisas";
 import { ActionModalImagem } from "../components/ActionModalImagem";
 
 const ModificarPesquisa = (props, { route }) => {
-  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false)
+  const [visibleModal1, setVisibleModal1] = useState(false)
   const [data, setData] = useState("")
   const [nome, setNome] = useState("")
   const [isValid, setIsValid] = useState(false)
