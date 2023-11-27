@@ -11,6 +11,9 @@ import NovaPesquisa from "./src/screens/NovaPesquisa";
 import AcoesPesquisa from "./src/screens/AcoesPesquisa";
 import Coleta from "./src/screens/Coleta";
 import Relatorio from "./src/screens/Relatorio";
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store'
+
 const Stack = createStackNavigator();
 
 const App = () => {

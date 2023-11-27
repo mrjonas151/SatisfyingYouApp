@@ -6,7 +6,8 @@ import {useSelector} from "react-redux"
 
 const CustomDrawer = (props) => {
 
-    const email = useSelector(state => state.login.email)
+    const email = useSelector((state) => state.login.email)
+    const password = useSelector((state) => state.login.password)
 
     const goToLogin = () => {
         props.navigation.navigate("Login")
@@ -19,7 +20,7 @@ const CustomDrawer = (props) => {
         <DrawerContentScrollView {...props} style={estilos.menuColor}>
             
             <View style={estilos.container}>
-                <Text style={styles.textoUser}>{email}</Text>
+                <Text style={estilos.textoUser}>{email}</Text>
                 <View style={estilos.textBarra}></View>
                 <TouchableOpacity style={estilos.menuPesquisa} onPress={goToHome}>
                     <Icon style={estilos.icone} name="description" />

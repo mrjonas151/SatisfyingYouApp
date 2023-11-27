@@ -3,10 +3,11 @@ import CustomButton from "../components/CustomButton"
 import { React, useEffect, useState } from "react"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { initializeFirestore, collection, query, onSnapshot } from 'firebase/firestore';
+import { initializeFirestore, collection, query, onSnapshot, doc, getDoc } from 'firebase/firestore';
 import app from "../firebase/config";
 import { reducerSetPesquisa } from "../redux/searchSlice";
 import { useDispatch } from 'react-redux';
+import { searchSlice } from "../redux/searchSlice"
 
 const Pesquisas = (props) => {
     const [listaPesquisas, setListaPesquisas] = useState();
@@ -16,7 +17,7 @@ const Pesquisas = (props) => {
     const dispatch = useDispatch()
 
     useEffect ( () => {
-        const q = query(pesquisaCollection, orderBy('nome', 'asc'))
+        const q = query(pesquisaCollection)
 
         const  unsubscribe = onSnapshot(q, (snapshot) => {
             const pesqs = []
@@ -36,49 +37,30 @@ const Pesquisas = (props) => {
     }
 
     const goToAcoesPesquisa = async (pesquisaId) => {
-        props.navigation.navigate("AcoesPesquisa", { pesquisaId});
+        //props.navigation.navigate("AcoesPesquisa", { pesquisaId});
+        const cardRef = doc(pesquisaCollection, pesquisaId); // Criar uma referência ao documento
+
         try {
             const docSnapshot = await getDoc(cardRef);
+
             if (docSnapshot.exists()) {
                 const cardData = docSnapshot.data();
 
                 dispatch(reducerSetPesquisa({
-                    id: id,
+                    id: pesquisaId, 
                     nome: cardData.nome,
                     data: cardData.data,
                     imageUrl: cardData.imageUrl
-                }))
+                }));
 
-                props.navigation.navigate('AcoesPesquisa');
+                props.navigation.navigate("AcoesPesquisa", { pesquisaId });
             } else {
                 console.log('O documento é inexistente');
             }
         } catch (error) {
             console.error('Erro ao obter dados do documento:', error);
         }
-
     }
-
-    const pesquisasData = [
-        {
-            id: '1',
-            titulo: 'SECOMP 2023',
-            subtitulo: '10/10/2023',
-            imageUrl: require('../assets/images/Secomp.png'),
-        },
-        {
-            id: '2',
-            titulo: 'UBUNTU 2022',
-            subtitulo: '05/06/2023',
-            imageUrl: require('../assets/images/Ubuntu.png'),
-        },
-        {
-            id: '3',
-            titulo: 'MENINAS CPU',
-            subtitulo: '01/04/2022',
-            imageUrl: require('../assets/images/Meninas.png'),
-        },
-      ]
 
     return(
         <View style={estilos.fundo}>
@@ -104,8 +86,7 @@ const Pesquisas = (props) => {
                         
                             <Image source={item.imageUrl} style={estilos.image} resizeMode="contain"/>
                             <Text style={estilos.titulo}>{item.titulo}</Text>
-                            <Text style={estilos.subtitulo}>{item.subtitulo}</Text>
-                            
+                            <Text style={estilos.subtitulo}>{item.subtitulo}</Text>  
                         
                     </TouchableOpacity>
                     )}

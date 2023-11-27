@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao';
 import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { db } from '../firebase/config';
-import Icon from react-native-vector-icons/MaterialIcons;
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from 'react-redux'
 
 export default function Coleta(props) {

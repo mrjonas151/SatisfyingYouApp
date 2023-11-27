@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function AcoesPesquisa(props) {
 
-  const nome = useSelector(state => state.pesquisa.nome)
+  const nome = useSelector(state => state.search.nome)
 
   useEffect(() => {
     props.navigation.setOptions({

@@ -9,8 +9,7 @@ const Home = () => {
 
     const DrawerNavigator = createDrawerNavigator()
 
-    const email = useSelector((state) => state.login.email)
-    const password = useSelector((state) => state.login.password)
+    
 
     return(
         <DrawerNavigator.Navigator 
