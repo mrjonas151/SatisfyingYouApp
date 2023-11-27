@@ -29,8 +29,6 @@ const NovaPesquisa = (props) => {
   pesquisaCollection = collection(db, "pesquisas")
 
   const addPesquisa = async () => {
-
-    console.log(storage)
     const imageRef = ref(getStorage(storage), idImg + '.jpeg') //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
     const file = await fetch(img.uri) //referencia imagem da camera 
     const blob = await file.blob()//extrai os bytes do arquivo
@@ -44,7 +42,8 @@ const NovaPesquisa = (props) => {
               const docPesquisa = {
                 titulo: nome,
                 subtitulo: data,
-                imageUrl: urlD
+                imageUrl: urlD,
+                imageNome: idImg+'.jpeg'
               }
               addDoc(pesquisaCollection, docPesquisa).then((docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).then(props.navigation.navigate("Home"))
                 .catch((erro) => { console.log("ERRO" + erro) })
@@ -102,7 +101,6 @@ const NovaPesquisa = (props) => {
           setUrlImage(result.assets[0].uri)
           setImage(result.assets[0])
           setIdImagem(Date.now().toString())
-          console.log('ID:', idImg);
         }
       )
       .catch(
@@ -118,7 +116,6 @@ const NovaPesquisa = (props) => {
           setUrlImage(result.assets[0].uri)
           setImage(result.assets[0])
           setIdImagem(Date.now().toString());
-          console.log('ID:', idImg);
         }
       )
       .catch(
