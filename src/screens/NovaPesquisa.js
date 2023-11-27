@@ -1,4 +1,4 @@
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, Modal } from "react-native";
 import { StyleSheet } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
@@ -9,10 +9,11 @@ import { initializeFirestore, collection, addDoc } from 'firebase/firestore';
 import app from "../firebase/config";
 import storage from "../firebase/config";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { ActionModalImagem } from "../components/ActionModalImagem";
 
 const NovaPesquisa = (props) => {
+  const [visibleModal, setVisibleModal] = useState(false);
   const [data, setData] = useState('')
   const [nome, setNome] = useState('')
   const [isValid, setIsValid] = useState(false)
@@ -22,21 +23,22 @@ const NovaPesquisa = (props) => {
   const [messageError3, setMessageError3] = useState('')
   const [url, setUrlImage] = useState('') //pega a url da imagem tirada
   const [img, setImage] = useState()//guarda dados img
+  const [idImg, setIdImagem] = useState('')
 
   db = initializeFirestore(app, { experimentalForceLongPolling: true })
   pesquisaCollection = collection(db, "pesquisas")
 
   const addPesquisa = async () => {
 
-    console.log("dehfwfiuwenfwuefweufweiufnweifwefbewfbwefew")
-    const imageRef = ref(storage, "minhaimg.jpeg") //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
+    console.log(storage)
+    const imageRef = ref(getStorage(storage), idImg + '.jpeg') //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
     const file = await fetch(img.uri) //referencia imagem da camera 
     const blob = await file.blob()//extrai os bytes do arquivo
-    
-    await uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
+
+    uploadBytes(imageRef, blob, { contentType: 'image/jpeg' })
       .then(
         (result) => { console.log("Arquivo enviado com sucesso.") },
-        await getDownloadURL(imageRef)
+        getDownloadURL(imageRef)
           .then(
             (urlD) => {
               const docPesquisa = {
@@ -45,19 +47,19 @@ const NovaPesquisa = (props) => {
                 imageUrl: urlD
               }
               addDoc(pesquisaCollection, docPesquisa).then((docRef) => { console.log("Pesquisa criada com sucesso, ID: " + docRef.id) }).then(props.navigation.navigate("Home"))
-              .catch((erro) => { console.log("ERRO" + erro) })
+                .catch((erro) => { console.log("ERRO" + erro) })
             }
           )
           .catch(
-            (error) =>( console.log("ERRO: "+JSON.stringify(error)))
+            (error) => (console.log("ERRO: " + JSON.stringify(error)))
           )
 
       )
       .catch(
         (error) => { console.log("ERRO ao enviar arquivo: " + JSON.stringify(error)) }
       )
-   
-  
+
+
   }
 
   const goToHome = () => {
@@ -99,11 +101,32 @@ const NovaPesquisa = (props) => {
         (result) => {
           setUrlImage(result.assets[0].uri)
           setImage(result.assets[0])
+          setIdImagem(Date.now().toString())
+          console.log('ID:', idImg);
         }
       )
       .catch(
         (error) => { console.log("Erro captura de imagem: " + JSON.stringify(error)) }
       )
+    setVisibleModal(false)
+  }
+
+  const uploadImage = () => {
+    launchImageLibrary({ mediaType: 'photo', includeBase64: true })
+      .then(
+        (result) => {
+          setUrlImage(result.assets[0].uri)
+          setImage(result.assets[0])
+          setIdImagem(Date.now().toString());
+          console.log('ID:', idImg);
+        }
+      )
+      .catch(
+        (error) => {
+          console.log("Erro captura de imagem: " + JSON.stringify(error))
+        }
+      )
+    setVisibleModal(false)
   }
   return (
     <View style={estilos.main_view}>
@@ -125,11 +148,11 @@ const NovaPesquisa = (props) => {
 
         { //se url tem conteudo, aparece imagem. Caso vazia, o botao.
           url ?
-            <TouchableOpacity onPress={capturarImage}>
-              <Image style={estilos.botaoImagem} source={{ uri: url }} />
+            <TouchableOpacity onPress={() => setVisibleModal(true)}>
+              <Image style={estilos.botaoImagem}  source={{ uri: url }} />
             </TouchableOpacity>
             :
-            <TouchableOpacity style={estilos.botaoImagem}><Text style={estilos.imagem} onPress={capturarImage} >Câmera/Galeria de imagens</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => setVisibleModal(true)} style={estilos.botaoImagem}><Text style={estilos.imagem} > Câmera/Galeria de imagens</Text></TouchableOpacity>
         }
 
         <Text style={estilos.textoErro}>{messageError3}</Text>
@@ -138,6 +161,13 @@ const NovaPesquisa = (props) => {
       <View style={estilos.rodape}>
         <CustomButton backgroundColor='#37BD6D' height={50} marginBottom={0} texto="CADASTRAR" width={330} funcao={goToHome}></CustomButton>
       </View>
+
+      <Modal visible={visibleModal} transparent={true} onRequestClose={() => setVisibleModal(false)}>
+        <ActionModalImagem
+          handleCamera={capturarImage}
+          handleGaleria={uploadImage}
+        />
+      </Modal>
 
     </View>
   );
