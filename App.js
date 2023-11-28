@@ -11,24 +11,29 @@ import NovaPesquisa from "./src/screens/NovaPesquisa";
 import AcoesPesquisa from "./src/screens/AcoesPesquisa";
 import Coleta from "./src/screens/Coleta";
 import Relatorio from "./src/screens/Relatorio";
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store'
+
 const Stack = createStackNavigator();
 
 const App = () => {
   return(
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{headerTintColor: '#573FBA', headerStyle: {backgroundColor: '#2B1D62', height: 80}, headerTitleStyle: { fontSize: 28, fontFamily: "AveriaLibre-Regular", color: 'white' }}}>
-        <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
-        <Stack.Screen name="CriarConta" component={CriarConta} options={{ title: 'Nova Conta' }}/>
-        <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} options={{ title: 'Recuperação de senha' }} />
-        <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
-        <Stack.Screen name="NovaPesquisa" component={NovaPesquisa} options={{ title: 'Nova pesquisa' }} />        
-        <Stack.Screen name="ModificarPesquisa" component={ModificarPesquisa} options={{headerShown:true, title: 'Modificar Pesquisa'}} />
-        <Stack.Screen name="AcoesPesquisa" component={AcoesPesquisa} options={{headerShown:true, title: 'Acoes Pesquisa'}} />
-        <Stack.Screen name="Coleta" component={Coleta} options={{headerShown:false, title: 'Coleta'}} />
-        <Stack.Screen name="Relatorio" component={Relatorio} options={{headerShown:true, title: 'Relatório'}} />
-        <Stack.Screen name="AgradecimentoParticipacao" component={AgradecimentoParticipacao} options={{headerShown:false}} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{headerTintColor: '#573FBA', headerStyle: {backgroundColor: '#2B1D62', height: 80}, headerTitleStyle: { fontSize: 28, fontFamily: "AveriaLibre-Regular", color: 'white' }}}>
+          <Stack.Screen name="Login" component={Login} options={{headerShown:false}} />
+          <Stack.Screen name="CriarConta" component={CriarConta} options={{ title: 'Nova Conta' }}/>
+          <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} options={{ title: 'Recuperação de senha' }} />
+          <Stack.Screen name="Home" component={Home} options={{headerShown:false}} />
+          <Stack.Screen name="NovaPesquisa" component={NovaPesquisa} options={{ title: 'Nova pesquisa' }} />        
+          <Stack.Screen name="ModificarPesquisa" component={ModificarPesquisa} options={{headerShown:true, title: 'Modificar Pesquisa'}} />
+          <Stack.Screen name="AcoesPesquisa" component={AcoesPesquisa} options={{headerShown:true, title: 'Acoes Pesquisa'}} />
+          <Stack.Screen name="Coleta" component={Coleta} options={{headerShown:false, title: 'Coleta'}} />
+          <Stack.Screen name="Relatorio" component={Relatorio} options={{headerShown:true, title: 'Relatório'}} />
+          <Stack.Screen name="AgradecimentoParticipacao" component={AgradecimentoParticipacao} options={{headerShown:false}} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

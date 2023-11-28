@@ -19,6 +19,7 @@ export default function Relatorio(props) {
   db = initializeFirestore(app, { experimentalForceLongPolling: true })
   pesquisaCollection = collection(db, "pesquisas")
   const pesquisaId = props.route.params.pesquisaId;
+  
 
   useEffect(() => {
     const atualiza = async () => {

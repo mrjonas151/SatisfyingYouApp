@@ -1,9 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DivPadrao } from '../components/DivPadrao.js';
+import {useSelector} from "react-redux";
+import { reducerSetSearch } from "../redux/searchSlice";
+import { useDispatch } from 'react-redux';
+import { searchSlice } from "../redux/searchSlice"
+import { getDoc, doc } from 'firebase/firestore';
 
 export default function AcoesPesquisa(props, { route }) {
-
+  const nomePesquisa = useSelector((state) => state.search.titulo)
 
   const pesquisaId = props.route.params.pesquisaId;
 
@@ -11,8 +16,35 @@ export default function AcoesPesquisa(props, { route }) {
     props.navigation.navigate('ModificarPesquisa', { pesquisaId })
   }
 
-  const goColeta = () => {
-    props.navigation.navigate('Coleta', { pesquisaId });
+  const goColeta = async () => {
+    const cardRef = doc(db, "pesquisas", pesquisaId);
+      
+        try {
+          const pesqDoc = await getDoc(cardRef);
+      
+          if (pesqDoc.exists()) {
+            const cardData = pesqDoc.data();
+      
+            dispatch(reducerSetSearch({
+              titulo: cardData.titulo,
+              subtitulo: cardData.subtitulo,
+              imageUrl: cardData.imageUrl,
+              imageNome: cardData.imageNome,
+              vp: cardData.vp,
+              vr: cardData.vr,
+              vn: cardData.vn,
+              vb: cardData.vb,
+              ve: cardData.ve
+            }));
+      
+            props.navigation.navigate('Coleta', { pesquisaId });
+          } else {
+            console.log('O documento não existe');
+          }
+        } catch (error) {
+          console.error('Erro ao obter dados da pesquisa:', error);
+        }
+    
   }
 
   const goRelatorio = () => {

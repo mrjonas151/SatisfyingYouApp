@@ -5,9 +5,16 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { initializeFirestore, collection, query, onSnapshot } from 'firebase/firestore';
 import app from "../firebase/config";
+import { reducerSetSearch } from "../redux/searchSlice";
+import { useDispatch } from 'react-redux';
+import { searchSlice } from "../redux/searchSlice"
+import { getDoc, doc } from 'firebase/firestore';
 
 const Pesquisas = (props) => {
     const [listaPesquisas, setListaPesquisas] = useState();
+    const dispatch = useDispatch()
+    db = initializeFirestore(app, { experimentalForceLongPolling: true })
+    pesquisaCollection = collection(db, "pesquisas")
 
     db = initializeFirestore(app, { experimentalForceLongPolling: true })
     pesquisaCollection = collection(db, "pesquisas")
@@ -32,9 +39,37 @@ const Pesquisas = (props) => {
         props.navigation.navigate("NovaPesquisa")
     }
 
-    const goToAcoesPesquisa = (pesquisaId) => {
-        props.navigation.navigate("AcoesPesquisa", { pesquisaId });
-    }
+    const goToAcoesPesquisa = async (pesquisaId) => {
+        const cardRef = doc(db, "pesquisas", pesquisaId);
+      
+        try {
+          const pesqDoc = await getDoc(cardRef);
+      
+          if (pesqDoc.exists()) {
+            const cardData = pesqDoc.data();
+      
+            dispatch(reducerSetSearch({
+              titulo: cardData.titulo,
+              subtitulo: cardData.subtitulo,
+              imageUrl: cardData.imageUrl,
+              imageNome: cardData.imageNome,
+              vp: cardData.vp,
+              vr: cardData.vr,
+              vn: cardData.vn,
+              vb: cardData.vb,
+              ve: cardData.ve
+            }));
+      
+            props.navigation.navigate('AcoesPesquisa', { pesquisaId });
+          } else {
+            console.log('O documento não existe');
+          }
+        } catch (error) {
+          console.error('Erro ao obter dados da pesquisa:', error);
+        }
+      };
+      
+
 
     return (
         <View style={estilos.fundo}>

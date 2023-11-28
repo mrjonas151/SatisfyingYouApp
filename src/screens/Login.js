@@ -5,12 +5,17 @@ import CustomButton from "../components/CustomButton"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth_mod } from "../firebase/config";
+import { useDispatch } from 'react-redux';
+import { reducerSetLogin } from '../redux/loginSlice';
 
 const Login = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [messageError, setMessageError] = useState('')
   const [isValid, setIsValid] = useState(false)
+
+
+  dispatch = useDispatch();
 
   const goToCadastro = () => {
     props.navigation.navigate("CriarConta")
@@ -19,9 +24,10 @@ const Login = (props) => {
   const goToHome = () => {
     if (isValid) {
       signInWithEmailAndPassword(auth_mod, email, password).then((userLogged) => {
+        dispatch(reducerSetLogin({email: email, senha: password}))
         props.navigation.navigate("Home")
       }).catch((error) => {
-        console.log("Erro ao autenticar" + JSON.stringify(error))
+        console.log("Erro ao autenticar!")
         setMessageError("E-mail e/ou senha inválidos.")
       })
     } else {

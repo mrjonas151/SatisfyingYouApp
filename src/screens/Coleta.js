@@ -5,6 +5,7 @@ import { initializeFirestore, collection } from 'firebase/firestore';
 import app from '../firebase/config';
 import { useEffect } from 'react';
 import { doc, updateDoc, query, onSnapshot } from 'firebase/firestore';
+import {useSelector} from "react-redux"
 
 export default function Coleta(props) {
 
@@ -15,6 +16,7 @@ export default function Coleta(props) {
   const [vb, setVb] = useState(0);
   const [ve, setVe] = useState(0);
 
+  const nomePesquisa = useSelector((state) => state.search.titulo)
   const pesquisaId = props.route.params.pesquisaId;
   db = initializeFirestore(app, { experimentalForceLongPolling: true })
   pesquisaCollection = collection(db, "pesquisas")
@@ -104,7 +106,7 @@ export default function Coleta(props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.botaoSair} onPress={goAcoesPesquisa}></TouchableOpacity>
-      <Text style={styles.title}>O que você achou do Carnaval 2024?</Text>
+      <Text style={styles.title}>O que você achou do {nomePesquisa} ?</Text>
       <View style={styles.squaresContainer}>
         <DivPadrao style={styles.div} textColor="#FFFFFF" text="Péssimo" imageSource={require('../assets/images/Sentimento_Pessimo.png')} onPress={() => coletarAvaliacao('pessimo')} />
         <DivPadrao style={styles.div} textColor="#FFFFFF" text="Ruim" imageSource={require('../assets/images/Sentimento_Ruim.png')} onPress={() => coletarAvaliacao('ruim')} />
