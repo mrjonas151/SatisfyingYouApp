@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 import { Image } from "react-native";
 import { useState, useEffect } from "react";
 import { ActionModal } from "../components/ActionModal";
-import { initializeFirestore, collection, updateDoc, doc, deleteDoc, query, onSnapshot, where } from 'firebase/firestore';
+import { initializeFirestore, collection, updateDoc, doc, deleteDoc, query, onSnapshot, getDocs } from 'firebase/firestore';
 import app from "../firebase/config";
 import storage from "../firebase/config";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -32,35 +32,36 @@ const ModificarPesquisa = (props, { route }) => {
   const [idImgAntigo, setIdImgAntigo] = useState('')
 
   const pesquisaId = props.route.params.pesquisaId;
-
   db = initializeFirestore(app, { experimentalForceLongPolling: true })
   pesquisaCollection = collection(db, "pesquisas")
 
   useEffect(() => {
-    const atualiza = () => {
-      const q = query(pesquisaCollection)
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const pesqs = []
-        snapshot.forEach((doc) => {
-          pesqs.push({
-            id: doc.id,
-            ...doc.data()
-          })
-        })
-        setListaPesquisas(pesqs)
-        const pe = (pesqs.find(pesqs => pesqs.id === pesquisaId))
-        setData(pe.subtitulo)
-        setNome(pe.titulo)
-        setIdImagem(pe.imageNome)
-        setUrlImage(pe.imageUrl)
-        setIdImgAntigo(pe.imageNome)
-
-
-      });
-      return () => unsubscribe();
-    }
     atualiza()
   }, [])
+
+  const atualiza = async () => {
+    const q = query(pesquisaCollection)
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const pesqs = []
+      snapshot.forEach((doc) => {
+        pesqs.push({
+          id: doc.id,
+          ...doc.data()
+        })
+      })
+      setListaPesquisas(pesqs)
+      if (pesqs) {
+        const pe = (pesqs.find(pesqs => pesqs?.id === pesquisaId))
+        setData(pe?.subtitulo);
+        setNome(pe?.titulo);
+        setIdImagem(pe?.imageNome);
+        setUrlImage(pe?.imageUrl);
+        setIdImgAntigo(pe?.imageNome);
+      }
+    });
+    return () => unsubscribe();
+  }
+
 
   const changePesquisa = async () => {
     const pesqRef = doc(db, "pesquisas", pesquisaId)
@@ -70,7 +71,6 @@ const ModificarPesquisa = (props, { route }) => {
         subtitulo: data
       })
     } else {
-
       const imageRef = ref(getStorage(storage), idImgAntigo) //referencia da imagem no storage, passa ome do arquivo para ser armazenado/ arquivo que esta no disp movel
       const file = await fetch(img.uri) //referencia imagem da camera 
       const blob = await file.blob()//extrai os bytes do arquivo
@@ -107,7 +107,7 @@ const ModificarPesquisa = (props, { route }) => {
   const goToHomeAfterModified = () => {
     if (isValid && isValidData) {
       changePesquisa();
-      props.navigation.navigate("Home")
+      props.navigation.navigate('Home');
     } else {
       setMessageError3("Nome e/ou Data inválidos.")
     }
@@ -115,7 +115,7 @@ const ModificarPesquisa = (props, { route }) => {
 
   const goToHomeAfterDelete = () => {
     deletePesquisa();
-    props.navigation.navigate("Home")
+    props.navigation.navigate('Home')
   }
 
   const handleNomePesq = (text) => {
